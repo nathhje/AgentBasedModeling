@@ -40,3 +40,4 @@ Research question:
 - How much influence is needed to stirr the market?
 - Are certain markets (many well-behaved, many crazy traders) more easily stirred?
 - Is the market more stable with a heterogeneous or a homogeneous set of traders?
+- 
