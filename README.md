@@ -1,12 +1,14 @@
 # AgentBasedModeling
 
-Ideas: \n
+Ideas: 
+
 Stock market 
 - minority game
 - artificial stock market
 - El Farol = bar example 
 - Search model on
 - Agents: amount of money they have 
+- model’s Gini Coefficient, a measure of wealth inequality?
 
 Steps for the stock market: 
 1. Making the minority game - binary: yes/no
