@@ -41,4 +41,6 @@ Research question:
 - Are certain markets (many well-behaved, many crazy traders) more easily stirred?
 - Is the market more stable with a heterogeneous or a homogeneous set of traders?
 - Do traders with certain strategies prefer traders with certain other strategies?
+- What is the best strategy for a trader?
+- Which strategies will lead to a stable market?
 - 
