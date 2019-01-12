@@ -13,7 +13,7 @@ def main():
     modelA.make_agents(10)
     modelA.run_simulation()
 
-    print(modelA.winner_history)
+    print(modelA.stock_price_history)
     
 if __name__ == "__main__":
     main()

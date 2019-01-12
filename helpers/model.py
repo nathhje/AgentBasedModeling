@@ -15,6 +15,9 @@ class Model():
 		self.end_time = 100
 		self.agent_list = []
 		self.winner_history = []
+		self.stock_price = 10
+		self.stock_price_history = [10]
+		
 		
 	def run_simulation(self):
 		
@@ -29,6 +32,9 @@ class Model():
 			else:
 				self.winner_history.append(False)
 		
+			self.stock_price += self.stock_change(this_round)
+			self.stock_price_history.append(self.stock_price)
+		
 			for agent in self.agent_list:
 				agent.outcome(self.winner_history[-1])
 				
@@ -39,3 +45,5 @@ class Model():
 		for i in range(number_of_agents):
 			self.agent_list.append(Agent())
 	
+	def stock_change(self, number_of_sells):
+		return (number_of_sells - len(self.agent_list)/2)/10.0
