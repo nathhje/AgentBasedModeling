@@ -28,6 +28,7 @@ Multiple ideas:
 - Shill (happens with bitcoins) --> pump and dump
 - El farol with coefficients - to decide the price (current price and difference of average of N last weeks) 
 (Looking at own OR sharing strategies of agents: -force it- to copy strategy)  
+- Netlogo: Social science --> Bidding market, El Farol, Minority game, Oil kartel hubnet
 
 MIKE: Work backwards: What is the research question (possible experiments or hypothesis -- before you code)
 
