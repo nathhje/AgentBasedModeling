@@ -5,7 +5,7 @@ Created on Sat Jan 12 09:44:23 2019
 @author: Gebruiker
 """
 
-import Agent
+from classes.agent import Agent
 
 class Model():
     
@@ -20,7 +20,7 @@ class Model():
 		
 		while(self.time < self.end_time):
 			this_round = 0
-			for agent in agent_list:
+			for agent in self.agent_list:
 				if agent.choose():
 					this_round += 1
 				
@@ -29,7 +29,7 @@ class Model():
 			else:
 				self.winner_history.append(False)
 		
-			for agent in agent_list:
+			for agent in self.agent_list:
 				agent.outcome(self.winner_history[-1])
 				
 			self.time += 1
@@ -39,8 +39,3 @@ class Model():
 		for i in range(number_of_agents):
 			self.agent_list.append(Agent())
 	
-modelA = Model()
-modelA.make_agents(10)
-modelA.run_simulation()
-
-print(modelA.winner_history)
