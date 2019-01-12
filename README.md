@@ -26,10 +26,11 @@ Multiple ideas:
 - Learning: Adapt neighbors --> number of strategies stays fixed --> random chance of adapting
 - Reenforcement learning/Neural agent: copying strategy of other agents 
 - Shill (happens with bitcoins) --> pump and dump
-- El farol with cooefficients - to decide the price (current price and difference of average of N last weeks) 
+- El farol with coefficients - to decide the price (current price and difference of average of N last weeks) 
 (Looking at own OR sharing strategies of agents: -force it- to copy strategy)  
 
 MIKE: Work backwards: What is the research question (possible experiments or hypothesis -- before you code)
+
 Research questions:
 - How much influence is needed to stirr the market?
 - Are certain markets (many well-behaved, many crazy traders) more easily stirred?
