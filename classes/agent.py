@@ -37,5 +37,3 @@ class Agent:
         print("The score list and history of this agent.")
         print(self.score_list)
         print(self.history)
-            
-            

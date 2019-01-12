@@ -13,9 +13,10 @@ def main():
     modelA = Model()
     modelA.make_agents(10)
     modelA.run_simulation()
-
-	plt.plot(modelA.stock_price_history)
-	plt.show()
+    
+    plt.figure()
+    plt.plot(modelA.stock_price_history)
+    plt.show()
     
 if __name__ == "__main__":
     main()
