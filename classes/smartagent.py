@@ -17,7 +17,7 @@ class Agent():
         self.score_list = []
         self.history = []
         
-    def choose(self):
+    def choose(self,stock_price_history):
         
         self.choice = bool(random.getrandbits(1))
         

@@ -5,7 +5,8 @@ Created on Sat Jan 12 09:44:23 2019
 @author: Gebruiker
 """
 
-from classes.agent import Agent
+# agent - old agent file -- smartagent - new agent file
+from classes.smartagent import Agent
 
 class Model():
     
@@ -24,7 +25,11 @@ class Model():
 		while(self.time < self.end_time):
 			this_round = 0
 			for agent in self.agent_list:
-				if agent.choose():
+				# old agent file
+				#if agent.choose():
+				#	this_round += 1
+				# new agent file
+				if agent.choose(stock_price_history):
 					this_round += 1
 				
 			if (this_round > len(self.agent_list) / 2):

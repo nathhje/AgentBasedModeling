@@ -5,7 +5,7 @@ Created on Sat Jan 12 09:50:10 2019
 @author: Gebruiker
 """
 
-class Properties:
+class Properties():
     
     def __init__(self):
         
