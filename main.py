@@ -5,13 +5,13 @@ Created on Sat Jan 12 09:42:36 2019
 @author: Gebruiker
 """
 
-from helpers.model import Model
+from helpers.smartmodel import Model
 import matplotlib.pyplot as plt
 
 def main():
     
     modelA = Model()
-    modelA.make_agents(10)
+    modelA.make_agents(20)
     modelA.run_simulation()
     
     plt.figure()

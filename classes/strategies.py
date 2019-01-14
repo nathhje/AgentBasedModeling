@@ -6,6 +6,7 @@ Created on Sat Jan 12 16:48:08 2019
 """
 
 import random
+import math
 
 class Strategies():
 
@@ -15,9 +16,10 @@ class Strategies():
         self.n_time = 5
 
     """"Basic strategies""" #With old boolean
-    def random_strat(self,history_self,history_all):
-        self.choice = bool(random.getrandbits(1))
-        self.history.append(self.choice)
+    def random_strat(self,history_self,history_all, stock):
+        self.choice = math.floor(random.random()*2)
+        if stock > 0:
+            self.choice *= -1
         return self.choice
 
     """Choice: -1 sell, 0 do nothing, 1 buy"""
@@ -29,10 +31,10 @@ class Strategies():
     """Buyers strategies"""
     #Agent buys if current price is below the threshold
     def buy_strat_below(self,history_self,history_all):
-        if history_self[-1] < self.threshold_low_price:
+        if history_all[-1] < self.threshold_low_price:
             self.choice = 1
         else:
-            self.choice = do_nothing_strat(history_self,history_all)
+            self.choice = self.do_nothing_strat(history_self,history_all)
         return self.choice
 
     #Agent buys if after n times lowering the price, the price rices
@@ -50,13 +52,13 @@ class Strategies():
         return self.choice
 
 
-    """Sellers strategies""""
+    """Sellers strategies"""
     #Agent sell if current price is above the threshold
     def sell_strat_above(self, history_self, history_all):
-        if history_self[-1] > self.threshold_high_price:
+        if history_all[-1] > self.threshold_high_price:
             self.choice = -1
         else:
-            self.choice = do_nothing_strat(history_self,history_all)
+            self.choice = self.do_nothing_strat(history_self,history_all)
         return self.choice
 
     #Agent sell if after n times dropping the price, the price rices
