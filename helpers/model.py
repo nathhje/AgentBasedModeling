@@ -29,7 +29,7 @@ class Model():
 				#if agent.choose():
 				#	this_round += 1
 				# new agent file
-				if agent.choose(stock_price_history):
+				if agent.choose(self.stock_price_history):
 					this_round += 1
 				
 			if (this_round > len(self.agent_list) / 2):
