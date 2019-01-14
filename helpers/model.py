@@ -6,7 +6,7 @@ Created on Sat Jan 12 09:44:23 2019
 """
 
 # agent - old agent file -- smartagent - new agent file
-from classes.smartagent import Agent
+from classes.agent import Agent
 
 class Model():
     
@@ -29,7 +29,7 @@ class Model():
 				#if agent.choose():
 				#	this_round += 1
 				# new agent file
-				if agent.choose(self.stock_price_history):
+				if agent.choose():
 					this_round += 1
 				
 			if (this_round > len(self.agent_list) / 2):
