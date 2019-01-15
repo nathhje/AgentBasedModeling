@@ -27,12 +27,25 @@ class Agent():
 		
 	def choose(self, stock_price_history):
 
+		
 		if self.seller == True:
+		
+			#LINES UNDERNEATH IS TEMP FIX
+			sell_price = stock_price_history[-1] + random.random() - 0.4
+			self.sell_prices.append(sell_price)
+			return sell_price
+			
 			"""choose between sell strategies"""
 			sell_price = self.sell_strategies.sell_optimistic(0,stock_price_history)
 			self.sell_prices.append(sell_price)
 	
 		else:
+		
+			#LINES UNDERNEATH IS TEMP FIX
+			buy_price = stock_price_history[-1] + random.random() - 0.6
+			self.sell_prices.append(buy_price)
+			return buy_price
+			
 			"""choose between buy strategies"""
 			buy_price = self.buy_strategies.optimistic(stock_price_history)
 			self.buy_prices.append(buy_price)
@@ -50,3 +63,6 @@ class Agent():
 		print(self.score_list)
 		print(self.buy_price)
 		print(self.sell_price)
+		
+	def update(self, bool, price):
+		pass
