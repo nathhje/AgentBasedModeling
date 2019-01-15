@@ -26,13 +26,23 @@ class StrategiesSellers():
         return self.sell_price
 
     def sell_predict_last_2(self, history_self, history_all):
-        """Agent predicts the new selling price based on course of the last two steps. """
+        """Agent predicts the new selling price based on the pregression 
+        of the last two steps. """
         if len(history_all) >= 2:
             self.sell_price = history_all[-1] + (history_all[-1]-history_all[-2])
         else:
             self.sell_price = history_all[-1]
         return self.sell_price
 
+    def sell_predict_last_n(self, history_self, history_all):
+        """Agent predicts the new selling price based on the pregression 
+        of the last two steps. """
+        print(self.n_time)
+        if len(history_all) >= 2:
+            self.sell_price = history_all[-1] + (history_all[-1]-history_all[-2])
+        else:
+            self.sell_price = history_all[-1]
+        return self.sell_price
 
 
 
