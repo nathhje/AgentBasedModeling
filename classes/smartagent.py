@@ -7,6 +7,7 @@ Created on Sat Jan 12 09:45:28 2019
 
 import random
 import math
+import numpy as np
 from classes.strategies import Strategies
 
 class Agent():
@@ -15,13 +16,17 @@ class Agent():
 		
 		self.score = 0
 		self.stock = math.floor(random.random()*2)
+		self.cash = math.floor(random.random()*5)
 		
 		self.score_list = []
 		self.history = []
+		self.stock_worth = [math.floor(random.random()*5) for x in range(self.stock)]
 		
 		self.strategies = Strategies()
 		
 	def choose(self, stock_price_history):
+
+		profit = np.negative([x - stock_price_history[-1] for x in self.stock_worth])
 	
 		if(self.stock > 0):
 		
@@ -36,7 +41,12 @@ class Agent():
 				
 			else: 
 				answer = self.strategies.random_strat(self.score_list, stock_price_history, self.stock)
-			
+		if answer == 1:
+			self.stock_worth.append(stock_price_history[-1])
+			self.cash -= stock_price_history[-1]
+		elif answer == -1:
+			self.stock_worth.pop(0)
+			self.cash += profit[0]
         
 		self.stock += answer
 		return answer
