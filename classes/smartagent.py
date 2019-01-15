@@ -43,6 +43,7 @@ class Agent():
 				answer = self.strategies.random_strat(self.score_list, stock_price_history, self.stock)
 		if answer == 1:
 			self.stock_worth.append(stock_price_history[-1])
+			self.stock_worth.sort()
 			self.cash -= stock_price_history[-1]
 		elif answer == -1:
 			self.stock_worth.pop(0)
