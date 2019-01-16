@@ -7,6 +7,7 @@ Created on Sat Jan 12 09:44:23 2019
 
 # agent - old agent file -- smartagent - new agent file
 from classes.agent3 import Agent
+import random
 
 class Model():
     
@@ -19,8 +20,8 @@ class Model():
 		self.buyers_list = []
 		self.sellers_list = []
 		
-		number_of_buyers = 10
-		number_of_sellers = 10
+		self.number_of_buyers = 10
+		self.number_of_sellers = 10
 
 		self.stock_price = 10
 		self.stock_price_history = [10]
@@ -50,15 +51,15 @@ class Model():
 			
 			for buyer in self.buyers_list:
 				if buyer in winning_agents:
-					buyer.update(True, stock_price)
+					buyer.update(True, self.stock_price)
 				else:
-					buyer.update(False, stock_price)
+					buyer.update(False, self.stock_price)
 			
 			for seller in self.sellers_list:
 				if seller in winning_agents:
-					seller.update(True, stock_price)
+					seller.update(True, self.stock_price)
 				else:
-					seller.update(False, stock_price)
+					seller.update(False, self.stock_price)
 			
 			self.time += 1
 			print(self.stock_price, this_round, [agent.stock_price for agent in self.sellers_list])
@@ -82,7 +83,7 @@ class Model():
 				winning_indices.append(i)
 				self.temp_stock_price += (temp_sellers[i].sell_prices[-1] + temp_buyers[i].buy_prices[-1]) / 2
 		
-		for i in sorted(indices, reverse=True):
+		for i in sorted(winning_indices, reverse=True):
 			winning_agents.append(temp_buyers[i])
 			winning_agents.append(temp_sellers[i])
 			del temp_buyers[i]

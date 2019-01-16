@@ -34,7 +34,7 @@ class Agent():
 	
 		else:
 			"""choose between buy strategies"""
-			buy_price = self.buy_strategies.optimistic(stock_price_history)
+			buy_price = self.buy_strategies.buy_optimistic(0,stock_price_history)
 			self.buy_prices.append(buy_price)
 
 	def outcome(self, winner):
