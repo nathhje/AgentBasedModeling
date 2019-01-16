@@ -20,8 +20,8 @@ class Model():
 		self.buyers_list = []
 		self.sellers_list = []
 		
-		number_of_buyers = 10
-		number_of_sellers = 10
+		self.number_of_buyers = 10
+		self.number_of_sellers = 10
 
 		self.stock_price = 10
 		self.stock_price_history = [10]

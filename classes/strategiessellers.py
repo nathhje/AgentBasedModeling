@@ -13,7 +13,9 @@ class StrategiesSellers():
     def __init__(self):
         self.threshold_low_price = 8
         self.threshold_high_price = 12
-        self.n_time = 5
+        self.n_time = 7
+        self.market_memory = 3
+        self.weights_dict = {0:0, 1:3, 2:1, 3:1}
 
     def sell_optimistic(self, history_self, history_all):
         """Agent tries to sell for 1 more than the market value last turn."""
@@ -26,16 +28,39 @@ class StrategiesSellers():
         return self.sell_price
 
     def sell_predict_last_2(self, history_self, history_all):
-        """Agent predicts the new selling price based on course of the last two steps. """
+        """Agent predicts the new selling price based on the pregression 
+        of the last two steps. """
         if len(history_all) >= 2:
             self.sell_price = history_all[-1] + (history_all[-1]-history_all[-2])
         else:
             self.sell_price = history_all[-1]
         return self.sell_price
 
-
-
-
+    def sell_predict_weighted_last_n(self, history_self, history_all):
+        """Agent predicts the new selling price based on the progression 
+        of the last n, n-1, n-2..., 2 steps. n is determined by the variable 
+        self.market_memory and the length of history_all. The selling price 
+        determined is a weighted average of the predicitons for the different lines.
+        The weights are determined are stored in weights_dict. 
+        """
+        print(self.market_memory, self.weights_dict)
+        if self.market_memory >= len(history_all):
+            max_length_of_line = len(history_all)
+        else:
+            max_length_of_line = self.market_memory
+        sum_sell_price = 0
+        sum_weights = 0
+        for i in range(max_length_of_line):
+            sum_sell_price += self.weights_dict[i] * (history_all[-1] + (history_all[-1]-history_all[-(i+1)]))
+            sum_weights += self.weights_dict[i]
+        #in case none of the values available so far have any weights assigned to them
+        #the agents just resort to taking the last value of the stock.
+        #Otherwise a divide by zero error occurs.
+        if sum_weights == 0:
+            self.sell_price = history_all[-1]
+        else:
+            self.sell_price = sum_sell_price/sum_weights
+        return self.sell_price
 
 """Sellers strategies"""
 """ #Agent sell if current price is above the threshold
