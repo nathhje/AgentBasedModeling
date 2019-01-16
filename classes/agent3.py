@@ -37,14 +37,13 @@ class Agent():
 			buy_price = self.buy_strategies.buy_optimistic(0,stock_price_history)
 			self.buy_prices.append(buy_price)
 
-	def outcome(self, winner):
-		
-		if self.score == winner:
-			
+	def update(self, winner):
+		self.score_list.append(winner)
+		if winner == True:
 			self.score += 1
-			
-		self.score_list.append(self.score)
-		
+		else:
+			self.score += -1
+
 	def print_outcomes(self):
 		print("The score list and history of this agent.")
 		print(self.score_list)

@@ -18,6 +18,7 @@ def main():
     plt.figure()
     plt.plot(modelA.stock_price_history)
     plt.show()
+    plt.savefig('stock_prices.png')
 
 if __name__ == "__main__":
     main()

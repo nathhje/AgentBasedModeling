@@ -51,18 +51,18 @@ class Model():
 
             for buyer in self.buyers_list:
                 if buyer in winning_agents:
-                    buyer.update(True, self.stock_price)
+                    buyer.update(True)#, self.stock_price)
                 else:
-                    buyer.update(False, self.stock_price)
+                    buyer.update(False)#, self.stock_price)
 
             for seller in self.sellers_list:
                 if seller in winning_agents:
-                    seller.update(True, self.stock_price)
+                    seller.update(True)#, self.stock_price)
                 else:
-                    seller.update(False, self.stock_price)
+                    seller.update(False)#, self.stock_price)
 
             self.time += 1
-            print(self.stock_price, this_round, [agent.stock_price for agent in self.sellers_list])
+            print(self.stock_price, this_round, [agent.sell_prices[-1] for agent in self.sellers_list])
 
 
     def make_buyers(self):
@@ -98,7 +98,8 @@ class Model():
             random.shuffle(temp_sellers)
             random.shuffle(temp_buyers)
             for i in range(len(shortest_list)):
-                if (temp_sellers[i].sell_prices[-1] < temp_buyers[i].buy_prices[-1]):
+                print(temp_sellers[i].sell_prices[-1],temp_buyers[i].buy_prices[-1])
+                if (temp_sellers[i].sell_prices[-1] <= temp_buyers[i].buy_prices[-1]):
                     winning_indices.append(i)
                     self.temp_stock_price += (temp_sellers[i].sell_prices[-1] + temp_buyers[i].buy_prices[-1]) / 2
 
@@ -107,10 +108,10 @@ class Model():
                 winning_agents.append(temp_sellers[i])
                 del temp_buyers[i]
                 del temp_sellers[i]
-                del shortest_list[i]
+
+            shortest_list, longest_list = self.define_lists(temp_buyers, temp_sellers)
 
         # #Recursive case
         # else:
         #     self.match(winning_agents, temp_buyers, temp_sellers)
-
         return winning_agents, temp_buyers, temp_sellers
