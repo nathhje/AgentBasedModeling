@@ -14,7 +14,7 @@ class Model():
     def __init__(self):
 
         self.time = 0
-        self.end_time = 10
+        self.end_time = 100
         self.matching_rounds = 10
 
         self.buyers_list = []
@@ -26,13 +26,13 @@ class Model():
         self.stock_price = 10
         self.stock_price_history = [10]
 
-        self.temp_stock_price = 10
+        self.temp_stock_price = 0
 
 
     def run_simulation(self):
 
         while(self.time < self.end_time):
-            this_round = 0
+            
             for buyer in self.buyers_list:
                 buyer.choose(self.stock_price_history)
 
@@ -43,10 +43,10 @@ class Model():
             temp_buyers = self.buyers_list.copy()
             temp_sellers = self.sellers_list.copy()
 
-            for i in range(self.matching_rounds):
-                winning_agents, temp_buyers, temp_sellers = self.match(winning_agents, temp_buyers, temp_sellers)
+            winning_agents, temp_buyers, temp_sellers = self.match(winning_agents, temp_buyers, temp_sellers)
 
             self.stock_price = self.temp_stock_price / (len(winning_agents) / 2)
+            self.temp_stock_price = 0
             self.stock_price_history.append(self.stock_price)
 
             for buyer in self.buyers_list:
@@ -62,7 +62,6 @@ class Model():
                     seller.update(False)#, self.stock_price)
 
             self.time += 1
-            print(self.stock_price, this_round, [agent.sell_prices[-1] for agent in self.sellers_list])
 
 
     def make_buyers(self):
@@ -84,6 +83,45 @@ class Model():
 
 
     def match(self, winning_agents, temp_buyers, temp_sellers):
+
+        shortest_list, longest_list = self.define_lists(temp_buyers, temp_sellers)
+        #print("shortest",shortest_list)
+        #print("longest",longest_list)
+        #print("sell",temp_sellers)
+        #print("buy",temp_buyers)
+
+        winning_indices = []
+        random.shuffle(temp_sellers)
+        random.shuffle(temp_buyers)
+        for i in range(len(shortest_list)):
+            if (temp_sellers[i].sell_prices[-1] <= temp_buyers[i].buy_prices[-1]):
+                winning_indices.append(i)
+                self.temp_stock_price += temp_buyers[i].buy_prices[-1]
+                
+        for i in sorted(winning_indices, reverse=True):
+            winning_agents.append(temp_buyers[i])
+            winning_agents.append(temp_sellers[i])
+            del temp_buyers[i]
+            del temp_sellers[i]
+            
+        winning_indices = []
+        
+        for i in range(len(temp_sellers)):
+            for j in range(len(temp_buyers)):
+                if temp_sellers[i].sell_prices[-1] <= temp_buyers[j].buy_prices[-1]:
+                    winning_indices.append(i)
+                    self.temp_stock_price += temp_buyers[j].buy_prices[-1]
+                    winning_agents.append(temp_buyers[j])
+                    del temp_buyers[j]
+                    break
+                    
+        for i in sorted(winning_indices, reverse=True):
+            winning_agents.append(temp_sellers[i])
+            del temp_sellers[i]
+                    
+        return winning_agents, temp_buyers, temp_sellers
+
+    def match2(self, winning_agents, temp_buyers, temp_sellers):
 
         shortest_list, longest_list = self.define_lists(temp_buyers, temp_sellers)
         len_shortest_list = len(shortest_list)+1
@@ -114,7 +152,4 @@ class Model():
             shortest_list, longest_list = self.define_lists(temp_buyers, temp_sellers)
             only_once = 1
 
-        # #Recursive case
-        # else:
-        #     self.match(winning_agents, temp_buyers, temp_sellers)
         return winning_agents, temp_buyers, temp_sellers

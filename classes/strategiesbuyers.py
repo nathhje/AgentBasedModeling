@@ -39,7 +39,7 @@ class StrategiesBuyers():
         return self.buy_price
 
     def buy_predict_weighted_last_n(self, history_self, history_all):
-       """Agent predicts the new buying price based on the progression 
+        """Agent predicts the new buying price based on the progression 
         of the last n, n-1, n-2..., 2 steps. n is determined by the variable 
         self.memory and the length of history_all. The buying price 
         determined is a weighted average of the predicitons for the different lines.
