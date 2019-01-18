@@ -1,5 +1,21 @@
 # AgentBasedModeling
 
+Curennt ideas and To-Dos:
+Have a look at exponential growth
+--> until match up work
+-->  until strategies work
+- several strategies
+- select best (Maybe Westerhoff)
+	- comparing older results
+	- memory...
+- price adjusted (Maybe Westerhoff as well)
+- volatitlity clustering?
+- strategies adapted for information arrival/speed of price adjustment
+- influence of memory on market
+- influence of market on strategy/memory (if some eovlution)
+- check stability,, total sales, price change...
+
+
 The stock market (El Farol = bar example)
 
 Steps for the (artificial) stock market: 
