@@ -39,22 +39,30 @@ class StrategiesBuyers():
         return self.buy_price
 
     def buy_predict_weighted_last_n(self, history_self, history_all):
-        """Agent predicts the new buying price based on the progression 
+       """Agent predicts the new buying price based on the progression 
         of the last n, n-1, n-2..., 2 steps. n is determined by the variable 
-        self.market_memory and the length of history_all. The buying price 
+        self.memory and the length of history_all. The buying price 
         determined is a weighted average of the predicitons for the different lines.
         The weights are determined are stored in weights_dict. 
         """
-        if self.market_memory >= len(history_all):
+        print(self.memory, self.weights_dict)
+        print(self.optimistic_pessimistic)
+        if self.memory >= len(history_all):
             max_length_of_line = len(history_all)
         else:
-            max_length_of_line = self.market_memory
+            max_length_of_line = self.memory
         sum_buy_price = 0
         sum_weights = 0
         for i in range(max_length_of_line):
             sum_buy_price += self.weights_dict[i] * (history_all[-1] + (history_all[-1]-history_all[-(i+1)]))
             sum_weights += self.weights_dict[i]
-        self.buy_price = sum_buy_price/sum_weights
+        #in case none of the values available so far have any weights assigned to them
+        #the agents just resort to taking the last value of the stock.
+        #Otherwise a divide by zero error occurs.
+        if sum_weights == 0:
+            self.buy_price = history_all[-1] + self.optimistic_pessimistic
+        else:
+            self.buy_price = sum_buy_price/sum_weights + self.optimistic_pessimistic
         return self.buy_price
 
 """Buyers strategies"""
