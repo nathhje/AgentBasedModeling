@@ -42,14 +42,14 @@ class Agent():
 		else:
 
 			#LINES UNDERNEATH IS TEMP FIX
-			# buy_price = stock_price_history[-1] + random.random() - 0.6
-			# self.buy_prices.append(buy_price)
-			# return buy_price
+			buy_price = stock_price_history[-1] + random.random() - 0.6
+			self.buy_prices.append(buy_price)
+			return buy_price
 
 			"""choose between buy strategies"""
 			buy_price = self.buy_strategies.buy_optimistic(0,stock_price_history)
 			self.buy_prices.append(buy_price)
-            return buy_price
+
 
 	def update(self, winner):
 		self.score_list.append(winner)
