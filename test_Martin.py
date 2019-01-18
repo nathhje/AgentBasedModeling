@@ -12,7 +12,6 @@ def main():
 	#print(agent.sell_prices)
 	price_history.append(agent.sell_prices[-1])
 	print(price_history)
-	print(price_history)
 	
 if __name__ == "__main__":
     main()
