@@ -62,6 +62,3 @@ class Agent():
 		print(self.score_list)
 		print(self.buy_price)
 		print(self.sell_price)
-		
-	def update(self, bool, price):
-		pass
