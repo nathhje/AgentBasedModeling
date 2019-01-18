@@ -6,7 +6,7 @@ Created on Sat Jan 12 09:44:23 2019
 """
 
 # agent - old agent file -- smartagent - new agent file
-from classes.agent3 import Agent
+from classes.agent4 import Agent
 import random
 
 class Model():
@@ -32,7 +32,7 @@ class Model():
     def run_simulation(self):
 
         while(self.time < self.end_time):
-            
+
             for buyer in self.buyers_list:
                 buyer.choose(self.stock_price_history)
 
@@ -97,15 +97,15 @@ class Model():
             if (temp_sellers[i].sell_prices[-1] <= temp_buyers[i].buy_prices[-1]):
                 winning_indices.append(i)
                 self.temp_stock_price += temp_buyers[i].buy_prices[-1]
-                
+
         for i in sorted(winning_indices, reverse=True):
             winning_agents.append(temp_buyers[i])
             winning_agents.append(temp_sellers[i])
             del temp_buyers[i]
             del temp_sellers[i]
-            
+
         winning_indices = []
-        
+
         for i in range(len(temp_sellers)):
             for j in range(len(temp_buyers)):
                 if temp_sellers[i].sell_prices[-1] <= temp_buyers[j].buy_prices[-1]:
@@ -114,11 +114,11 @@ class Model():
                     winning_agents.append(temp_buyers[j])
                     del temp_buyers[j]
                     break
-                    
+
         for i in sorted(winning_indices, reverse=True):
             winning_agents.append(temp_sellers[i])
             del temp_sellers[i]
-                    
+
         return winning_agents, temp_buyers, temp_sellers
 
     def match2(self, winning_agents, temp_buyers, temp_sellers):
