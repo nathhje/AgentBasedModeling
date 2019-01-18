@@ -43,7 +43,7 @@ class Agent():
 		
 			#LINES UNDERNEATH IS TEMP FIX
 			buy_price = stock_price_history[-1] + random.random() - 0.6
-			self.sell_prices.append(buy_price)
+			self.buy_prices.append(buy_price)
 			return buy_price
 			
 			"""choose between buy strategies"""
