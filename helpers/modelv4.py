@@ -14,7 +14,7 @@ class Model():
     def __init__(self):
 
         self.time = 0
-        self.end_time = 100
+        self.end_time = 10
         self.matching_rounds = 10
 
         self.buyers_list = []
@@ -92,13 +92,15 @@ class Model():
         #
 
         while len_shortest_list != len(shortest_list):
+            only_once = 0
             len_shortest_list = len(shortest_list)
 
             winning_indices = []
             random.shuffle(temp_sellers)
             random.shuffle(temp_buyers)
             for i in range(len(shortest_list)):
-                print(temp_sellers[i].sell_prices[-1],temp_buyers[i].buy_prices[-1])
+                if only_once == 0:
+                    print(temp_sellers[i].sell_prices[-1],temp_buyers[i].buy_prices[-1])
                 if (temp_sellers[i].sell_prices[-1] <= temp_buyers[i].buy_prices[-1]):
                     winning_indices.append(i)
                     self.temp_stock_price += (temp_sellers[i].sell_prices[-1] + temp_buyers[i].buy_prices[-1]) / 2
@@ -110,6 +112,7 @@ class Model():
                 del temp_sellers[i]
 
             shortest_list, longest_list = self.define_lists(temp_buyers, temp_sellers)
+            only_once = 1
 
         # #Recursive case
         # else:
