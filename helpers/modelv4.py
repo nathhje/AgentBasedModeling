@@ -6,7 +6,7 @@ Created on Sat Jan 12 09:44:23 2019
 """
 
 # agent - old agent file -- smartagent - new agent file
-from classes.agent4 import Agent
+from classes.agent3 import Agent
 import random
 
 class Model():
@@ -14,7 +14,7 @@ class Model():
     def __init__(self):
 
         self.time = 0
-        self.end_time = 100
+        self.end_time = 1000
         self.matching_rounds = 10
 
         self.buyers_list = []
@@ -62,6 +62,8 @@ class Model():
                     seller.update(False)#, self.stock_price)
 
             self.time += 1
+            
+        print(self.stock_price_history)
 
 
     def make_buyers(self):
@@ -96,7 +98,7 @@ class Model():
         for i in range(len(shortest_list)):
             if (temp_sellers[i].sell_prices[-1] <= temp_buyers[i].buy_prices[-1]):
                 winning_indices.append(i)
-                self.temp_stock_price += temp_buyers[i].buy_prices[-1]
+                self.temp_stock_price += (temp_sellers[i].sell_prices[-1] + temp_buyers[i].buy_prices[-1]) / 2
 
         for i in sorted(winning_indices, reverse=True):
             winning_agents.append(temp_buyers[i])
@@ -110,7 +112,7 @@ class Model():
             for j in range(len(temp_buyers)):
                 if temp_sellers[i].sell_prices[-1] <= temp_buyers[j].buy_prices[-1]:
                     winning_indices.append(i)
-                    self.temp_stock_price += temp_buyers[j].buy_prices[-1]
+                    self.temp_stock_price += (temp_sellers[i].sell_prices[-1] + temp_buyers[j].buy_prices[-1]) / 2
                     winning_agents.append(temp_buyers[j])
                     del temp_buyers[j]
                     break
