@@ -6,7 +6,7 @@ Created on Sat Jan 12 09:44:23 2019
 """
 
 # agent - old agent file -- smartagent - new agent file
-from classes.agent3 import Agent
+from classes.agent4 import Agent
 import random
 
 class Model():
@@ -27,11 +27,40 @@ class Model():
         self.stock_price_history = [10]
 
         self.temp_stock_price = 0
-
+		
+        # Warming-up parameters
+        self.warming_up_time = 200
+        self.number_of_wo_agents = 10
+        self.warm_up_buyers_list = []
+        self.warm_up_sellers_list = []
+  
 
     def run_simulation(self):
+		
+        for i in range(self.number_of_wo_agents):
+            self.warm_up_buyers_list.append(Agent(False))
+            self.warm_up_sellers_list.append(Agent(True))
+		
+		#Warming up period
+        while(self.time < self.warming_up_time):
+            for i in range(self.number_of_wo_agents):
+                self.warm_up_buyers_list[i].random_choose(self.stock_price_history)
+                self.warm_up_sellers_list[i].random_choose(self.stock_price_history)
+				
+            winning_agents = []
+            temp_buyers =  self.warm_up_buyers_list.copy()
+            temp_sellers = self.warm_up_sellers_list.copy()
 
-        while(self.time < self.end_time):
+            winning_agents, temp_buyers, temp_sellers = self.match(winning_agents, temp_buyers, temp_sellers)
+
+            self.stock_price = self.temp_stock_price / (len(winning_agents) / 2)
+            self.temp_stock_price = 0
+            self.stock_price_history.append(self.stock_price)
+
+            self.time += 1
+
+			
+        while(self.time < self.end_time + self.warming_up_time):
 
             for buyer in self.buyers_list:
                 buyer.choose(self.stock_price_history)
@@ -63,7 +92,6 @@ class Model():
 
             self.time += 1
             
-        print(self.stock_price_history)
 
 
     def make_buyers(self):

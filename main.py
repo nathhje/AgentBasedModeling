@@ -16,7 +16,7 @@ def main():
     modelA.run_simulation()
 
     plt.figure()
-    plt.plot(modelA.stock_price_history)
+    plt.plot(modelA.stock_price_history[:210])
     plt.show()
     plt.savefig('results/stock_prices.png')
 

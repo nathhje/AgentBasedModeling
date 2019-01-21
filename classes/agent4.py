@@ -72,3 +72,18 @@ class Agent():
         print(self.score_list)
         print(self.buy_price)
         print(self.sell_price)
+		
+    def random_choose(self, stock_price_history):
+        if self.seller == True:
+        
+            #LINES UNDERNEATH IS TEMP FIX
+            sell_price = stock_price_history[-1] + random.random() - 0.4
+            self.sell_prices.append(sell_price)
+            return sell_price
+            
+        else:
+        
+            #LINES UNDERNEATH IS TEMP FIX
+            buy_price = stock_price_history[-1] + random.random() - 0.6
+            self.buy_prices.append(buy_price)
+            return buy_price
