@@ -17,6 +17,7 @@ class StrategiesSellers():
         self.memory = 3
         self.weights_dict = {0:0, 1:3, 2:1, 3:1}
         self.optimistic_pessimistic = 0.1
+        self.strategy_picked = 0
         
     def sell_optimistic(self, history_self, history_all):
         """Agent tries to sell for 1 more than the market value last turn."""
@@ -44,8 +45,9 @@ class StrategiesSellers():
         determined is a weighted average of the predicitons for the different lines.
         The weights are determined are stored in weights_dict. 
         """
-        print(self.memory, self.weights_dict)
-        print(self.optimistic_pessimistic)
+        #print(self.memory, self.weights_dict)
+        #print(self.optimistic_pessimistic)
+        print(self.strategy_picked)
         if self.memory >= len(history_all):
             max_length_of_line = len(history_all)
         else:

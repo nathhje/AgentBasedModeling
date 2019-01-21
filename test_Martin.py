@@ -1,4 +1,4 @@
-from classes.agent4 import Agent
+from classes.agent5 import Agent
 
 def main():
 	agent = Agent(True)

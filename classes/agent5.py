@@ -21,7 +21,7 @@ class Agent():
         self.stock = 0
         self.stock_list = []
         self.money = 0
-        self.money_list = 0
+        self.money_list = []
 
         self.seller = seller
         self.buy_prices = []
@@ -34,18 +34,27 @@ class Agent():
         self.sell_strategies.memory = self.memory
         self.buy_strategies.memory = self.memory
 
-        #produces a sell and a buy dictionary for the weights of the different predictions by random.
+
+        #produces a set sell and a buy dictionary for the weights of the different predictions by random.
         #The dictionaries are of the same length as the agent's memory
-        self.sell_strategies.weights_dict = {}
-        self.buy_strategies.weights_dict = {}
+        self.number_of_strategies = 5
+        self.sell_strategies.weights_dict_list = []
+        self.buy_strategies.weights_dict_list = []
+        for j in range(self.number_of_strategies):
+            self.sell_strategies.weights_dict = {}
+            self.buy_strategies.weights_dict = {}
+            for i in range(self.memory):
+                self.sell_strategies.weights_dict[i] = random.random()
+                self.buy_strategies.weights_dict[i] = random.random()
+            #assigns a random number between -0.5 and +0.5 to determine if the agent is optimistic or pessimistic, and to what extend
+            self.sell_strategies.optimistic_pessimistic = random.random()- 0.5
+            self.buy_strategies.optimistic_pessimistic = random.random()- 0.5
 
-        for i in range(self.memory):
-            self.sell_strategies.weights_dict[i] = random.random()
-            self.buy_strategies.weights_dict[i] = random.random()
-        #assigns a random number between -0.5 and +0.5 to determine if the agent is optimistic or pessimistic, and to what extend
-        self.sell_strategies.optimistic_pessimistic = random.random()- 0.5
-        self.buy_strategies.optimistic_pessimistic = random.random()- 0.5
+        #sets the default strategy to the first one, so choosing a strategy is not absolutely necessary
+        self.sell_strategies.strategy_picked = 1
 
+    def choose_strategy(self, stock_price):
+        pass
 
     def choose(self, stock_price_history):
         if self.seller == True:
@@ -91,3 +100,18 @@ class Agent():
         print(self.score_list)
         print(self.buy_price)
         print(self.sell_price)
+
+    def random_choose(self, stock_price_history):
+        if self.seller == True:
+        
+            #LINES UNDERNEATH IS TEMP FIX
+            sell_price = stock_price_history[-1] + random.random() - 0.4
+            self.sell_prices.append(sell_price)
+            return sell_price
+            
+        else:
+        
+            #LINES UNDERNEATH IS TEMP FIX
+            buy_price = stock_price_history[-1] + random.random() - 0.6
+            self.buy_prices.append(buy_price)
+            return buy_price
