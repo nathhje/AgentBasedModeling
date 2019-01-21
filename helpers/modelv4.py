@@ -6,7 +6,7 @@ Created on Sat Jan 12 09:44:23 2019
 """
 
 # agent - old agent file -- smartagent - new agent file
-from classes.agent4 import Agent
+from classes.agent5 import Agent
 import random
 
 class Model():
@@ -77,7 +77,8 @@ class Model():
             self.stock_price = self.temp_stock_price / (len(winning_agents) / 2)
             self.temp_stock_price = 0
             self.stock_price_history.append(self.stock_price)
-
+            
+            '''
             for buyer in self.buyers_list:
                 if buyer in winning_agents:
                     buyer.update(True)#, self.stock_price)
@@ -89,7 +90,7 @@ class Model():
                     seller.update(True)#, self.stock_price)
                 else:
                     seller.update(False)#, self.stock_price)
-
+            '''
             self.time += 1
             
 
@@ -126,7 +127,10 @@ class Model():
         for i in range(len(shortest_list)):
             if (temp_sellers[i].sell_prices[-1] <= temp_buyers[i].buy_prices[-1]):
                 winning_indices.append(i)
-                self.temp_stock_price += (temp_sellers[i].sell_prices[-1] + temp_buyers[i].buy_prices[-1]) / 2
+                price = (temp_sellers[i].sell_prices[-1] + temp_buyers[i].buy_prices[-1]) / 2
+                self.temp_stock_price += price
+                temp_sellers[i].update(True,price)
+                temp_buyers[i].update(True,price)
 
         for i in sorted(winning_indices, reverse=True):
             winning_agents.append(temp_buyers[i])
@@ -140,7 +144,10 @@ class Model():
             for j in range(len(temp_buyers)):
                 if temp_sellers[i].sell_prices[-1] <= temp_buyers[j].buy_prices[-1]:
                     winning_indices.append(i)
-                    self.temp_stock_price += (temp_sellers[i].sell_prices[-1] + temp_buyers[j].buy_prices[-1]) / 2
+                    price = (temp_sellers[i].sell_prices[-1] + temp_buyers[j].buy_prices[-1]) / 2
+                    self.temp_stock_price += price
+                    temp_sellers[i].update(True,price)
+                    temp_buyers[j].update(True,price)
                     winning_agents.append(temp_buyers[j])
                     del temp_buyers[j]
                     break
@@ -148,38 +155,11 @@ class Model():
         for i in sorted(winning_indices, reverse=True):
             winning_agents.append(temp_sellers[i])
             del temp_sellers[i]
-
-        return winning_agents, temp_buyers, temp_sellers
-
-    def match2(self, winning_agents, temp_buyers, temp_sellers):
-
-        shortest_list, longest_list = self.define_lists(temp_buyers, temp_sellers)
-        len_shortest_list = len(shortest_list)+1
-        #Base case
-        #OR WHILE STATEMENT. To match the buyers and sellers,
-        #
-
-        while len_shortest_list != len(shortest_list):
-            only_once = 0
-            len_shortest_list = len(shortest_list)
-
-            winning_indices = []
-            random.shuffle(temp_sellers)
-            random.shuffle(temp_buyers)
-            for i in range(len(shortest_list)):
-                if only_once == 0:
-                    print(temp_sellers[i].sell_prices[-1],temp_buyers[i].buy_prices[-1])
-                if (temp_sellers[i].sell_prices[-1] <= temp_buyers[i].buy_prices[-1]):
-                    winning_indices.append(i)
-                    self.temp_stock_price += (temp_sellers[i].sell_prices[-1] + temp_buyers[i].buy_prices[-1]) / 2
-
-            for i in sorted(winning_indices, reverse=True):
-                winning_agents.append(temp_buyers[i])
-                winning_agents.append(temp_sellers[i])
-                del temp_buyers[i]
-                del temp_sellers[i]
-
-            shortest_list, longest_list = self.define_lists(temp_buyers, temp_sellers)
-            only_once = 1
+            
+        for i in range(len(temp_sellers)):
+            temp_sellers[i].update(False,0)
+            
+        for i in range(len(temp_buyers)):
+            temp_buyers[i].update(False,0)
 
         return winning_agents, temp_buyers, temp_sellers
