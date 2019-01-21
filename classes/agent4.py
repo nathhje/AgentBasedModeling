@@ -38,8 +38,8 @@ class Agent():
             self.sell_strategies.weights_dict[i] = random.random()
             self.buy_strategies.weights_dict[i] = random.random()
         #assigns a random number between -0.5 and +0.5 to determine if the agent is optimistic or pessimistic, and to what extend
-        self.sell_strategies.optimistic_pessimistic = random.random()- 0.5
-        self.buy_strategies.optimistic_pessimistic = random.random()- 0.5
+        self.sell_strategies.optimistic_pessimistic = random.random() - 0.5		#Jaspers Note: make this sized with the volatility of the market
+        self.buy_strategies.optimistic_pessimistic = random.random() - 0.5
 
 
     def choose(self, stock_price_history):
