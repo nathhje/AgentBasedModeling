@@ -47,7 +47,8 @@ class StrategiesSellers():
         """
         #print(self.memory, self.weights_dict)
         #print(self.optimistic_pessimistic)
-        print(self.strategy_picked)
+        print(self.weights_dict_list)
+        #print(self.weights_dict_list[self.strategy_picked]["optpes"])
         if self.memory >= len(history_all):
             max_length_of_line = len(history_all)
         else:
@@ -55,15 +56,15 @@ class StrategiesSellers():
         sum_sell_price = 0
         sum_weights = 0
         for i in range(max_length_of_line):
-            sum_sell_price += self.weights_dict[i] * (history_all[-1] + (history_all[-1]-history_all[-(i+1)]))
-            sum_weights += self.weights_dict[i]
+            sum_sell_price += self.weights_dict_list[self.strategy_picked][i] * (history_all[-1] + (history_all[-1]-history_all[-(i+1)]))
+            sum_weights += self.weights_dict_list[self.strategy_picked][i]
         #in case none of the values available so far have any weights assigned to them
         #the agents just resort to taking the last value of the stock.
         #Otherwise a divide by zero error occurs.
         if sum_weights == 0:
-            self.sell_price = history_all[-1] + self.optimistic_pessimistic
+            self.sell_price = history_all[-1] + self.weights_dict_list[self.strategy_picked]["optpes"]
         else:
-            self.sell_price = sum_sell_price/sum_weights + self.optimistic_pessimistic
+            self.sell_price = sum_sell_price/sum_weights + self.weights_dict_list[self.strategy_picked]["optpes"]
         return self.sell_price
 
 """Sellers strategies"""

@@ -30,28 +30,29 @@ class Agent():
         self.buy_strategies = StrategiesBuyers()
         self.sell_strategies = StrategiesSellers()
 
-        self.memory = 5
+        self.memory = 3
         self.sell_strategies.memory = self.memory
         self.buy_strategies.memory = self.memory
 
 
         #produces a set sell and a buy dictionary for the weights of the different predictions by random.
         #The dictionaries are of the same length as the agent's memory
-        self.number_of_strategies = 5
+        self.number_of_strategies = 2
         self.sell_strategies.weights_dict_list = []
         self.buy_strategies.weights_dict_list = []
         for j in range(self.number_of_strategies):
-            self.sell_strategies.weights_dict = {}
-            self.buy_strategies.weights_dict = {}
+            sell_weights_dict = {}
+            buy_weights_dict = {}
             for i in range(self.memory):
-                self.sell_strategies.weights_dict[i] = random.random()
-                self.buy_strategies.weights_dict[i] = random.random()
+                sell_weights_dict[i] = random.random()
+                buy_weights_dict[i] = random.random()
             #assigns a random number between -0.5 and +0.5 to determine if the agent is optimistic or pessimistic, and to what extend
-            self.sell_strategies.optimistic_pessimistic = random.random()- 0.5
-            self.buy_strategies.optimistic_pessimistic = random.random()- 0.5
-
+            sell_weights_dict["optpes"] = random.random()- 0.5
+            buy_weights_dict["optpes"] = random.random()- 0.5
+            self.sell_strategies.weights_dict_list.append(sell_weights_dict)
+            self.sell_strategies.weights_dict_list.append(buy_weights_dict)
         #sets the default strategy to the first one, so choosing a strategy is not absolutely necessary
-        self.sell_strategies.strategy_picked = 1
+        self.sell_strategies.strategy_picked = 0
 
     def choose_strategy(self, stock_price):
         pass
