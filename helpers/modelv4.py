@@ -6,7 +6,7 @@ Created on Sat Jan 12 09:44:23 2019
 """
 
 # agent - old agent file -- smartagent - new agent file
-from classes.agent4 import Agent
+from classes.secretAgent import Agent
 import random
 
 class Model():
@@ -14,14 +14,14 @@ class Model():
     def __init__(self):
 
         self.time = 0
-        self.end_time = 1000
+        self.end_time = 500
         self.matching_rounds = 10
 
         self.buyers_list = []
         self.sellers_list = []
 
-        self.number_of_buyers = 10
-        self.number_of_sellers = 10
+        self.number_of_buyers = 200
+        self.number_of_sellers = 200
 
         self.stock_price = 10
         self.stock_price_history = [10]
@@ -29,12 +29,18 @@ class Model():
         self.temp_stock_price = 0
 		
         # Warming-up parameters
-        self.warming_up_time = 200
+        self.warming_up_time = 100
         self.number_of_wo_agents = 10
         self.warm_up_buyers_list = []
         self.warm_up_sellers_list = []
-  
-
+		
+        #Jasper
+        self.notes_prices_time = []
+        self.notes_prices_sell = []
+        self.notes_prices_buy = []
+        self.notes_prices_match = []
+        self.notes_prices_time_match = []
+		
     def run_simulation(self):
 		
         for i in range(self.number_of_wo_agents):
@@ -67,6 +73,8 @@ class Model():
 
             for seller in self.sellers_list:
                 seller.choose(self.stock_price_history)
+				
+            #print([[agent.buy_prices[-1], agent.memory] for agent in temp_buyers])
 
             winning_agents = []
             temp_buyers = self.buyers_list.copy()
@@ -91,6 +99,13 @@ class Model():
                     seller.update(False)#, self.stock_price)
 
             self.time += 1
+			
+            for buyer in self.buyers_list:
+                buyer.calcProfit(self.stock_price_history[-1])
+
+            for seller in self.sellers_list:
+                seller.calcProfit(self.stock_price_history[-1])			
+			
             
 
 
@@ -115,6 +130,12 @@ class Model():
     def match(self, winning_agents, temp_buyers, temp_sellers):
 
         shortest_list, longest_list = self.define_lists(temp_buyers, temp_sellers)
+        for i in range(len(temp_sellers)):
+            self.notes_prices_time.append(self.time)
+            self.notes_prices_sell.append(temp_sellers[i].sell_prices[-1])
+            self.notes_prices_buy.append(temp_buyers[i].buy_prices[-1])
+
+			
         #print("shortest",shortest_list)
         #print("longest",longest_list)
         #print("sell",temp_sellers)
@@ -126,7 +147,15 @@ class Model():
         for i in range(len(shortest_list)):
             if (temp_sellers[i].sell_prices[-1] <= temp_buyers[i].buy_prices[-1]):
                 winning_indices.append(i)
+                
+                temp_sellers[i].matched((temp_sellers[i].sell_prices[-1] + temp_buyers[i].buy_prices[-1]) / 2)
+                temp_buyers[i].matched((temp_sellers[i].sell_prices[-1] + temp_buyers[i].buy_prices[-1]) / 2)
                 self.temp_stock_price += (temp_sellers[i].sell_prices[-1] + temp_buyers[i].buy_prices[-1]) / 2
+                
+                self.notes_prices_match.append(temp_sellers[i].sell_prices[-1])
+                self.notes_prices_match.append(temp_buyers[i].buy_prices[-1])
+                self.notes_prices_time_match.append(self.time)
+                self.notes_prices_time_match.append(self.time)
 
         for i in sorted(winning_indices, reverse=True):
             winning_agents.append(temp_buyers[i])
@@ -141,13 +170,20 @@ class Model():
                 if temp_sellers[i].sell_prices[-1] <= temp_buyers[j].buy_prices[-1]:
                     winning_indices.append(i)
                     self.temp_stock_price += (temp_sellers[i].sell_prices[-1] + temp_buyers[j].buy_prices[-1]) / 2
+                    self.notes_prices_match.append(temp_sellers[i].sell_prices[-1])
+                    self.notes_prices_match.append(temp_buyers[j].buy_prices[-1])
+                    self.notes_prices_time_match.append(self.time)
+                    self.notes_prices_time_match.append(self.time)
                     winning_agents.append(temp_buyers[j])
                     del temp_buyers[j]
                     break
 
         for i in sorted(winning_indices, reverse=True):
+			
             winning_agents.append(temp_sellers[i])
             del temp_sellers[i]
+			
+
 
         return winning_agents, temp_buyers, temp_sellers
 
