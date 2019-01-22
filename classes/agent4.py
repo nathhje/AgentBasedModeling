@@ -34,6 +34,9 @@ class Agent():
         self.sell_strategies.weights_dict = {}
         self.buy_strategies.weights_dict = {}
 
+        self.profit = 0
+        self.weights = []
+		
         for i in range(self.memory):
             self.sell_strategies.weights_dict[i] = random.random()
             self.buy_strategies.weights_dict[i] = random.random()
@@ -87,3 +90,9 @@ class Agent():
             buy_price = stock_price_history[-1] + random.random() - 0.6
             self.buy_prices.append(buy_price)
             return buy_price
+
+    def matched(self, price):
+        pass
+		
+    def calcProfit(self, marketprice):
+        pass

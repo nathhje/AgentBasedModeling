@@ -88,15 +88,15 @@ class Model():
 
             for buyer in self.buyers_list:
                 if buyer in winning_agents:
-                    buyer.update(True)#, self.stock_price)
+                    buyer.update(True, self.stock_price)
                 else:
-                    buyer.update(False)#, self.stock_price)
+                    buyer.update(False, self.stock_price)
 
             for seller in self.sellers_list:
                 if seller in winning_agents:
-                    seller.update(True)#, self.stock_price)
+                    seller.update(True, self.stock_price)
                 else:
-                    seller.update(False)#, self.stock_price)
+                    seller.update(False, self.stock_price)
 
             self.time += 1
 			
