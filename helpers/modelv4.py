@@ -14,14 +14,15 @@ class Model():
     def __init__(self):
 
         self.time = 0
-        self.end_time = 500
+        self.end_time = 1000
         self.matching_rounds = 10
 
         self.buyers_list = []
         self.sellers_list = []
 
-        self.number_of_buyers = 200
-        self.number_of_sellers = 200
+        self.number_of_buyers = 100
+        self.number_of_sellers = 100
+        self.ratio_of_smart_agents = 0.5
 
         self.stock_price = 10
         self.stock_price_history = [10]
@@ -68,12 +69,16 @@ class Model():
 			
         while(self.time < self.end_time + self.warming_up_time):
 
-            for buyer in self.buyers_list:
+            for buyer in self.buyers_list[round((self.ratio_of_smart_agents*self.number_of_buyers)):]:
                 buyer.choose(self.stock_price_history)
-
-            for seller in self.sellers_list:
+            for buyer in self.buyers_list[:round((self.ratio_of_smart_agents*self.number_of_buyers))]:
+                buyer.random_choose(self.stock_price_history)
+            	
+            for seller in self.sellers_list[round(self.ratio_of_smart_agents*self.number_of_sellers):]:
                 seller.choose(self.stock_price_history)
-				
+            for seller in self.sellers_list[:round(self.ratio_of_smart_agents*self.number_of_sellers)]:
+                seller.random_choose(self.stock_price_history)
+		    		
             #print([[agent.buy_prices[-1], agent.memory] for agent in temp_buyers])
 
             winning_agents = []

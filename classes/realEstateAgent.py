@@ -32,6 +32,8 @@ class Agent():
 		self.profit = 0
 		self.penalty = 0
 		
+		self.positivity = random.random()
+		
 	def update(self, winner, price):
 		self.score_list.append(winner)
 		if winner == True:
@@ -93,6 +95,12 @@ class Agent():
 		self.match_prices.append(0)
 		
 		picksomething = self.nextPoint(self.weights, stock_price_history)
+		
+		if(self.seller):
+			picksomething += np.std(stock_price_history[-self.memory-1:]) * self.positivity
+		else:
+			picksomething -= np.std(stock_price_history[-self.memory-1:]) * self.positivity
+		
 		self.sell_prices.append(picksomething)
 		self.buy_prices.append(picksomething)
 		return picksomething
