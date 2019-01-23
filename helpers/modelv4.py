@@ -191,36 +191,3 @@ class Model():
 
 
         return winning_agents, temp_buyers, temp_sellers
-
-    def match2(self, winning_agents, temp_buyers, temp_sellers):
-
-        shortest_list, longest_list = self.define_lists(temp_buyers, temp_sellers)
-        len_shortest_list = len(shortest_list)+1
-        #Base case
-        #OR WHILE STATEMENT. To match the buyers and sellers,
-        #
-
-        while len_shortest_list != len(shortest_list):
-            only_once = 0
-            len_shortest_list = len(shortest_list)
-
-            winning_indices = []
-            random.shuffle(temp_sellers)
-            random.shuffle(temp_buyers)
-            for i in range(len(shortest_list)):
-                if only_once == 0:
-                    print(temp_sellers[i].sell_prices[-1],temp_buyers[i].buy_prices[-1])
-                if (temp_sellers[i].sell_prices[-1] <= temp_buyers[i].buy_prices[-1]):
-                    winning_indices.append(i)
-                    self.temp_stock_price += (temp_sellers[i].sell_prices[-1] + temp_buyers[i].buy_prices[-1]) / 2
-
-            for i in sorted(winning_indices, reverse=True):
-                winning_agents.append(temp_buyers[i])
-                winning_agents.append(temp_sellers[i])
-                del temp_buyers[i]
-                del temp_sellers[i]
-
-            shortest_list, longest_list = self.define_lists(temp_buyers, temp_sellers)
-            only_once = 1
-
-        return winning_agents, temp_buyers, temp_sellers
