@@ -38,17 +38,6 @@ class Agent():
 			self.score += 1
 		else:
 			self.score += -1
-	
-	def outcome(self, winner):
-		if self.score == winner:
-			self.score += 1
-		self.score_list.append(self.score)
-	
-	def print_outcomes(self):
-		print("The score list and history of this agent.")
-		print(self.score_list)
-		print(self.buy_price)
-		print(self.sell_price)
 		
 	def random_choose(self, stock_price_history):
 	
