@@ -6,7 +6,7 @@ Created on Sat Jan 12 09:44:23 2019
 """
 
 # agent - old agent file -- smartagent - new agent file
-from classes.secretAgent import Agent
+from classes.agentv7 import Agent
 import random
 
 class Model():
