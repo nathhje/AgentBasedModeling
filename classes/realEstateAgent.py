@@ -32,12 +32,25 @@ class Agent():
 		self.profit = 0
 		self.penalty = 0
 		
+		self.positivity = random.random()
+		
 	def update(self, winner, price):
 		self.score_list.append(winner)
 		if winner == True:
 			self.score += 1
 		else:
 			self.score += -1
+	
+	def outcome(self, winner):
+		if self.score == winner:
+			self.score += 1
+		self.score_list.append(self.score)
+	
+	def print_outcomes(self):
+		print("The score list and history of this agent.")
+		print(self.score_list)
+		print(self.buy_price)
+		print(self.sell_price)
 		
 	def random_choose(self, stock_price_history):
 	
@@ -82,6 +95,12 @@ class Agent():
 		self.match_prices.append(0)
 		
 		picksomething = self.nextPoint(self.weights, stock_price_history)
+		
+		if(self.seller):
+			picksomething += np.std(stock_price_history[-self.memory-1:]) * self.positivity
+		else:
+			picksomething -= np.std(stock_price_history[-self.memory-1:]) * self.positivity
+		
 		self.sell_prices.append(picksomething)
 		self.buy_prices.append(picksomething)
 		return picksomething
