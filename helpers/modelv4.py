@@ -15,7 +15,6 @@ class Model():
 
         self.time = 0
         self.end_time = 1000
-        self.matching_rounds = 10
 
         self.buyers_list = []
         self.sellers_list = []
@@ -36,7 +35,6 @@ class Model():
         self.warm_up_sellers_list = []
 
         #Parameters for plotting notes Jasper
-        self.notes_prices_time = [] #NOTES
         self.notes_prices_time_sellers = []
         self.notes_prices_time_buyers = []
         self.notes_prices_sell = []
@@ -56,10 +54,7 @@ class Model():
         for i in range(self.number_of_sellers):
             self.sellers_list.append(Agent(True))
 
-
-    """Start running the simulation"""
-    def run_simulation(self):
-        #Append the warming up agents
+    def warm_up(self):
         for i in range(self.number_of_wu_agents):
             self.warm_up_buyers_list.append(Agent(False))
             self.warm_up_sellers_list.append(Agent(True))
@@ -78,11 +73,15 @@ class Model():
             winning_agents, temp_buyers, temp_sellers = self.match(winning_agents, temp_buyers, temp_sellers)
 
             #Update the stock price based on the match
-            self.stock_price = self.temp_stock_price / (len(winning_agents) / 2)
-            self.stock_price_history.append(self.stock_price)
+            self.temp_stock_price = self.temp_stock_price / (len(winning_agents) / 2)
+            self.stock_price_history.append(self.temp_stock_price)
 
             self.temp_stock_price = 0
             self.time += 1
+
+    """Start running the simulation"""
+    def run_simulation(self):
+        self.warm_up()
 
         #Start the real simulation
         while(self.time < self.end_time + self.warming_up_time):
@@ -106,8 +105,8 @@ class Model():
             winning_agents, temp_buyers, temp_sellers = self.match(winning_agents, temp_buyers, temp_sellers)
 
             #Update the stock price based on the match
-            self.stock_price = self.temp_stock_price / (len(winning_agents) / 2)
-            self.stock_price_history.append(self.stock_price)
+            self.temp_stock_price = self.temp_stock_price / (len(winning_agents) / 2)
+            self.stock_price_history.append(self.temp_stock_price)
 
             self.temp_stock_price = 0
             self.time += 1
