@@ -20,9 +20,11 @@ class Strategies():
         weightList = []
         for i in range(visionRange - 1):
             weightList.append(random.random())
+        sumW = sum(weightList)
+        lenW = len(weightList)
         for i in range(visionRange - 1):
-            weightList[i] = weightList[i]/sum(weightList)*len(weightList)
-
+            weightList[i] = weightList[i]/sumW*lenW
+        	
         return weightList
 
     """pick one of the strategies (randomly)"""
@@ -45,7 +47,7 @@ class Strategies():
         for i in reversed(range(visionRange)):
             b = -(i + 1)
             newpoint += weightList[b]*(setPoints[b] - setPoints[b-1])
-
+			
         return newpoint
 
     def determine_best_strategies(self, marketprice, strategy_memory):
