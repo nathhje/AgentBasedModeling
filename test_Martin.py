@@ -1,16 +1,17 @@
-from classes.agent4 import Agent
+from classes.agentv7 import Agent
 
 def main():
 	agent = Agent(True)
-	price_history = [10.0, 11.0]
+	price_history = [8.0, 9.0, 10.0]
 	agent.choose(price_history)
 	#print(price_history)
 	#print(agent.sell_prices)
 	price_history.append(agent.sell_prices[-1])
+	agent.track_strategies(price_history)
 	#print(price_history)
-	agent.choose(price_history)
+	#agent.choose(price_history)
 	#print(agent.sell_prices)
-	price_history.append(agent.sell_prices[-1])
+	#price_history.append(agent.sell_prices[-1])
 	print(price_history)
 	
 if __name__ == "__main__":

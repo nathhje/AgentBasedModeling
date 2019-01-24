@@ -19,9 +19,7 @@ class Agent():
 
         self.buy_prices = []
         self.sell_prices = []
-	
         self.strategies = Strategies()
-
         self.match_prices = []
         self.profit = 0
         self.penalty = 0
@@ -80,11 +78,8 @@ class Agent():
         else:
             self.profit += marketprice - self.match_prices[-1]
 
-    #Place in strategy file?
-    def determine_best_strategies(self, marketprice, strategy_memory):
-        None
-        """
-        Determines the deviation from the average market price for each of the strategies in the last strategy_memory cases
-        and returns the strategy with the lowest total deviation to be picked in the future.
-        Being closer to that price increases the chance of a match-up and minimises the losses.
-        """    
+    def track_strategies(self, stock_price_history):
+        for i in self.strategies.strategies:
+            print(i)
+            print(stock_price_history)
+            
