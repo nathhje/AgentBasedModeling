@@ -21,7 +21,7 @@ class Strategies():
         for i in range(visionRange - 1):
             weightList.append(random.random())
         sumW = sum(weightList)
-        lenW = len(weightList)
+        lenW = len(weightList) + 1
         for i in range(visionRange - 1):
             weightList[i] = weightList[i]/sumW*lenW
         	
