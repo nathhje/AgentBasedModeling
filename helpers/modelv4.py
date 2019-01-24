@@ -23,7 +23,6 @@ class Model():
         self.number_of_sellers = 100
         self.ratio_of_smart_agents = 0.5
 
-        self.stock_price = 10
         self.stock_price_history = [10]
 
         self.temp_stock_price = 0
