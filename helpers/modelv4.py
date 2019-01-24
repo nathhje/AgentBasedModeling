@@ -24,7 +24,6 @@ class Model():
         self.ratio_of_smart_agents = 0.5
 
         self.stock_price_history = [10]
-
         self.temp_stock_price = 0
 
         # Warming-up parameters
@@ -53,6 +52,7 @@ class Model():
         for i in range(self.number_of_sellers):
             self.sellers_list.append(Agent(True))
 
+    """Start warming up and running the simulation"""
     def warm_up(self):
         for i in range(self.number_of_wu_agents):
             self.warm_up_buyers_list.append(Agent(False))
@@ -78,7 +78,6 @@ class Model():
             self.temp_stock_price = 0
             self.time += 1
 
-    """Start running the simulation"""
     def run_simulation(self):
         self.warm_up()
 
@@ -115,23 +114,9 @@ class Model():
             for seller in self.sellers_list:
                 seller.calcProfit(self.stock_price_history[-1])
 
-
     """Match the Agents buyers and sellers"""
-    #Define the shortest and longest list of buyers and sellers
-    #Since the amount of buyers and sellers could be different
-    def define_lists(self, temp_buyers, temp_sellers):
-        shortest_list = temp_sellers
-        longest_list = temp_buyers
-        if (len(temp_buyers) < len(temp_sellers)):
-            shortest_list = temp_buyers
-            longest_list = temp_sellers
-        return shortest_list, longest_list
-
     #Match the Agents buyers and sellers
     def match(self, winning_agents, temp_buyers, temp_sellers):
-        #Define of the buyers and sellers list which one is the shortest and longest
-        shortest_list, longest_list = self.define_lists(temp_buyers, temp_sellers)
-
         #Notes of the prices of sellers and buyers
         for i in range(len(temp_sellers)):
             self.notes_prices_time_sellers.append(self.time)
@@ -145,34 +130,6 @@ class Model():
         winning_indices = []
         random.shuffle(temp_sellers)
         random.shuffle(temp_buyers)
-
-        #When the sell price is smaller than the buy price, then there is a match
-        #Add the average of those prices to the stock price
-        for i in range(len(shortest_list)):
-            if (temp_sellers[i].sell_prices[-1] <= temp_buyers[i].buy_prices[-1]):
-                winning_indices.append(i)
-
-                average_price = (temp_sellers[i].sell_prices[-1] + temp_buyers[i].buy_prices[-1]) / 2
-                temp_sellers[i].matched(average_price)
-                temp_buyers[i].matched(average_price)
-                self.temp_stock_price += average_price
-
-                #Notes of the prices of matches
-                self.notes_prices_match.append(temp_sellers[i].sell_prices[-1])
-                self.notes_prices_match.append(temp_buyers[i].buy_prices[-1])
-                self.notes_prices_time_match.append(self.time)  #For the matched seller
-                self.notes_prices_time_match.append(self.time) #For the matched buyer
-
-        #Append the matching agents to the winning agents
-        #And delete those from the temporary lists
-        for i in sorted(winning_indices, reverse=True):
-            winning_agents.append(temp_buyers[i])
-            winning_agents.append(temp_sellers[i])
-            del temp_buyers[i]
-            del temp_sellers[i]
-
-        #Continue on finding matches
-        winning_indices = []
 
         for i in range(len(temp_sellers)):
             for j in range(len(temp_buyers)):
