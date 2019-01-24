@@ -15,10 +15,10 @@ def main():
     modelA.make_buyers()
     modelA.make_sellers()
     modelA.run_simulation()
-    
+
     plt.figure()
 	##Plot normal stockflow
-    
+
     #plt.plot(modelA.stock_price_history)
     #plt.show()
     #plt.savefig('results/stock_prices.png')
@@ -43,14 +43,14 @@ def main():
     #plt.savefig('results/crossreverence.png')
 
 	#Plot matches
-    plt.scatter(modelA.notes_prices_time, modelA.notes_prices_sell, s=3, c="blue")
-    plt.scatter(modelA.notes_prices_time, modelA.notes_prices_buy, s=3, c="green")
+    plt.scatter(modelA.notes_prices_time_sellers, modelA.notes_prices_sell, s=3, c="blue")
+    plt.scatter(modelA.notes_prices_time_buyers, modelA.notes_prices_buy, s=3, c="green")
     plt.scatter(modelA.notes_prices_time_match, modelA.notes_prices_match, s=3, c="orange")
     plt.plot(range(len(modelA.stock_price_history)), modelA.stock_price_history, c="red")
     plt.show()
-    plt.savefig('results/stock_prices.png')	
-	
+    plt.savefig('results/stock_prices.png')
 
-	
+
+
 if __name__ == "__main__":
     main()
