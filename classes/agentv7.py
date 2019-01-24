@@ -55,8 +55,8 @@ class Agent():
             nextGuess += std_pos
             self.sell_prices.append(nextGuess)
         else:
-            self.buy_prices.append(nextGuess)
             nextGuess -= std_pos
+            self.buy_prices.append(nextGuess)
 
         return nextGuess 
 
