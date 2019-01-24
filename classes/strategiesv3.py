@@ -12,7 +12,7 @@ class Strategies():
     def create_strategies(self):
         for i in range(self.number_of_strategies):
             self.strategies.append([])
-            self.memory = math.floor(random.random()*80 + 0.5)
+            self.memory = math.floor(random.random()*80 + 1.)
             self.strategies[i].append(self.memory)
             self.strategies[i].append(self.setWeights(self.memory))
 
