@@ -47,6 +47,7 @@ def main():
     plt.scatter(modelA.notes_prices_time_buyers, modelA.notes_prices_buy, s=3, c="green")
     plt.scatter(modelA.notes_prices_time_match, modelA.notes_prices_match, s=3, c="orange")
     plt.plot(range(len(modelA.stock_price_history)), modelA.stock_price_history, c="red")
+    plt.axis(ymin = 0)
     plt.show()
     plt.savefig('results/stock_prices.png')
 

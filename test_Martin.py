@@ -2,8 +2,10 @@ from classes.agentv7 import Agent
 
 def main():
 	agent = Agent(True)
-	price_history = [8.0, 9.0, 10.0]
-	agent.choose(price_history)
+	price_history = [8.0, 9.0, 10.0, 11.0, 11.0]
+	weights = agent.choose_strategy()
+	agent.initial_track_strategies(price_history)
+	agent.choose(price_history, agent.choose_strategy())
 	#print(price_history)
 	#print(agent.sell_prices)
 	price_history.append(agent.sell_prices[-1])

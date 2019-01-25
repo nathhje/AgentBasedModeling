@@ -20,11 +20,15 @@ class Agent():
         self.buy_prices = []
         self.sell_prices = []
         self.strategies = Strategies()
+        self.strategy_evaluation = []
+        for i in range(self.strategies.number_of_strategies):
+            self.strategy_evaluation.append([])
         self.match_prices = []
         self.profit = 0
         self.penalty = 0
 
         self.positivity = random.random()
+        self.positivity = 0
 
     """Warming up period, random choosing"""
     def random_choose(self, stock_price_history):
@@ -39,12 +43,24 @@ class Agent():
             self.buy_prices.append(buy_price)
             return buy_price
 
+    """pick the one of the strategies that would have performed the best within strategy_evaluation_memory"""
+    def choose_strategy(self):
+        strategy_evaluation_sums = [sum(i) for i in self.strategy_evaluation]
+        index = strategy_evaluation_sums.index(min(strategy_evaluation_sums))
+        #random strategy
+        #index = math.floor(random.random()*len(self.strategies.strategies))
+        #calculated best strategy
+        #index = determine_best_strategies(marketprice, strategy_memory)
+        return self.strategies.strategies[index]
+
     """Actual agents, choosing based on strategies"""
-    def choose(self, stock_price_history):
-        weights = self.strategies.choose_strategy()
-	
-	#add for every turn a new 0
-        self.match_prices.append(0)
+    def choose(self, stock_price_history, weights):
+        length_diff = len(weights) - len(stock_price_history) +1 
+        if length_diff > 0:
+            #print(length_diff)
+            #print(weights[length_diff:])
+            weights = weights[length_diff:]
+            self.strategies.normalize_weights(weights)
 		
         nextGuess = self.strategies.nextPoint(weights, stock_price_history)
         std_pos = np.std(stock_price_history[-self.strategies.memory-1:]) * self.positivity
@@ -78,8 +94,35 @@ class Agent():
         else:
             self.profit += marketprice - self.match_prices[-1]
 
+
+
+    def initial_track_strategies(self, stock_price_history):
+        for i in reversed(range(1, min(self.strategies.strategy_evaluation_memory, len(stock_price_history)))):
+            for j in range(len(self.strategies.strategies)):
+                #print(self.strategy_evaluation_memory)
+                #if i == 0:
+                #    history_mod = stock_price_history[:]
+                #    weights_mod = self.strategies.strategies[j][-len(stock_price_history)+1:]
+
+                    #print(i, stock_price_history[:], stock_price_history, weights, weights[-len(stock_price_history)+1:])
+                    #print(self.choose(stock_price_history[:], weights[-len(stock_price_history)+1:]))
+                #else:
+                history_mod = stock_price_history[:-i]
+                weights_mod = self.strategies.strategies[j][-len(stock_price_history)+1:-i]
+                    #print(i, stock_price_history[:-i], stock_price_history, weights, weights[-len(stock_price_history)+1:-i])
+                #normalizes weights_mod
+                self.strategies.normalize_weights(weights_mod)
+                #print(history_mod, weights_mod)
+                #print(i, j, self.choose(history_mod, weights_mod), stock_price_history[-i])
+                self.strategy_evaluation[j].append(abs(self.choose(history_mod, weights_mod) - stock_price_history[-i]))
+        #print(self.strategy_evaluation)
+
     def track_strategies(self, stock_price_history):
-        for i in self.strategies.strategies:
-            print(i)
-            print(stock_price_history)
-            
+        #checks whether the max_lenght is already reached. If so, the first element is removed before a new last element is added
+        for i in range(len(self.strategy_evaluation)):
+            if self.strategies.strategy_evaluation_memory - 1 == len(self.strategy_evaluation[i]):
+                self.strategy_evaluation[i].pop(0)
+            #print(stock_price_history[:-1])
+            self.strategy_evaluation[i].append(abs(self.choose(stock_price_history[:-1],self.strategies.strategies[i]) - stock_price_history[-1]))
+        return self.strategy_evaluation
+
