@@ -24,7 +24,7 @@ class Strategies():
         sumW = sum(weights)
         lenW = len(weights)
         for i in range(len(weights)):
-            weights[i] = weights[i]/sumW*lenW
+            weights[i] = weights[i]/sumW*(lenW + 1)
         return weights
 
     """For each point in the memory, a weight is given"""
