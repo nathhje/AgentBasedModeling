@@ -109,7 +109,7 @@ class Model():
             for seller in self.sellers_list[round(self.ratio_of_smart_agents*self.number_of_sellers):]:
                 seller.match_prices.append(0)
                 seller.track_strategies(self.stock_price_history)
-                seller.choose(self.stock_price_history, buyer.choose_strategy())
+                seller.choose(self.stock_price_history, seller.choose_strategy())
             for seller in self.sellers_list[:round(self.ratio_of_smart_agents*self.number_of_sellers)]:
                 seller.random_choose(self.stock_price_history)
 
