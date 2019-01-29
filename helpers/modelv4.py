@@ -40,6 +40,8 @@ class Model():
         self.notes_prices_buy = []
         self.notes_prices_match = []
         self.notes_prices_time_match = []
+		
+        self.id_counter = 0
 
     """
     Make the Agents buyers and sellers
@@ -47,17 +49,19 @@ class Model():
     """
     def make_buyers(self):
         for i in range(self.number_of_buyers):
-            self.buyers_list.append(Agent(False))
+            self.buyers_list.append(Agent(False, self.id_counter))
+            self.id_counter += 1
 
     def make_sellers(self):
         for i in range(self.number_of_sellers):
-            self.sellers_list.append(Agent(True))
+            self.sellers_list.append(Agent(True, self.id_counter))
+            self.id_counter += 1
 
     """Start warming up and running the simulation"""
     def warm_up(self):
         for i in range(self.number_of_wu_agents):
-            self.warm_up_buyers_list.append(Agent(False))
-            self.warm_up_sellers_list.append(Agent(True))
+            self.warm_up_buyers_list.append(Agent(False, self.id_counter))
+            self.warm_up_sellers_list.append(Agent(True, self.id_counter))
 
 		#Warming up period
         while(self.time < self.warming_up_time):

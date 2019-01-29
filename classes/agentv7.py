@@ -12,11 +12,12 @@ from classes.strategiesv3 import Strategies
 
 class Agent():
     
-    def __init__(self, seller):
+    def __init__(self, seller, unique_id):
 
         """"define if agent is a seller"""
         self.seller = seller
-
+        self.id = unique_id
+		
         self.buy_prices = []
         self.sell_prices = []
         self.strategies = Strategies()
