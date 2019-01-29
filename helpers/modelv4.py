@@ -8,13 +8,14 @@ Created on Sat Jan 12 09:44:23 2019
 # agent - old agent file -- smartagent - new agent file
 from classes.agentv7 import Agent
 import random
+import math
 
 class Model():
 
     def __init__(self):
 
         self.time = 0
-        self.end_time = 1000
+        self.end_time = 200
 
         self.buyers_list = []
         self.sellers_list = []
@@ -22,7 +23,7 @@ class Model():
         self.number_of_buyers = 100
         self.number_of_sellers = 100
         self.ratio_of_smart_agents = 0.5
-
+		
         self.stock_price_history = [10]
         self.temp_stock_price = 0
 
@@ -80,6 +81,11 @@ class Model():
 
     def run_simulation(self):
         self.warm_up()
+        #for i in range(90):
+        #    self.time += 1
+        #    #self.stock_price_history.append(self.stock_price_history[-1] + 0.05 )
+        #    self.stock_price_history.append(self.stock_price_history[-1] + 2 * math.sin(i * math.pi / 17))
+        
 
         #Start the real simulation
 

@@ -7,9 +7,9 @@ class Strategies():
         self.number_of_strategies = 3
         self.strategies = []
         self.memory = math.floor(random.random()*80 + 1.)
-        self.memory = 5+1
+        self.memory = 40+1
         #evaluation memory is acutally one lower than the chard coded number. This should be fixed at some point
-        self.strategy_evaluation_memory = 3+1
+        self.strategy_evaluation_memory = 5+1
         #strategy_evaluation_memory can not exceed memory
         if self.strategy_evaluation_memory > self.memory:
             self.strategy_evaluation_memory = self.memory
@@ -45,7 +45,8 @@ class Strategies():
         if visionRange < 1:
             return setPoints[-1]
 
-        newpoint = setPoints[-visionRange]
+        newpoint = setPoints[-visionRange - 1]
+        weightList = self.normalize_weights(weightList[-visionRange:])
         for i in reversed(range(visionRange)):
             b = -(i + 1)
             newpoint += weightList[b]*(setPoints[b] - setPoints[b-1])
