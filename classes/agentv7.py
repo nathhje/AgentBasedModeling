@@ -30,6 +30,8 @@ class Agent():
 
         self.positivity = random.random()
         self.positivity = 0
+		
+        self.strategy_index = []
 
     """Warming up period, random choosing"""
     def random_choose(self, stock_price_history):
@@ -48,6 +50,8 @@ class Agent():
     def choose_strategy(self):
         strategy_evaluation_sums = [sum(i) for i in self.strategy_evaluation]
         index = strategy_evaluation_sums.index(min(strategy_evaluation_sums))
+        self.strategy_index.append(index)
+        print(self.seller)
         #random strategy
         #index = math.floor(random.random()*len(self.strategies.strategies))
         #calculated best strategy

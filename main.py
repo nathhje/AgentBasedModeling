@@ -57,7 +57,8 @@ def main():
     plt.show()
     plt.savefig('results/stock_prices.png')
 	
-
+    print(modelA.sellers_list[0].strategy_index)
+	
     dataset = [["Price", "Time", "Id"]]
     for agent in modelA.sellers_list:
         for i in range(len(agent.sell_prices)):
