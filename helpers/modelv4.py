@@ -130,9 +130,13 @@ class Model():
             #Calculate the profit of the agents
             for buyer in self.buyers_list:
                 buyer.calcProfit(self.stock_price_history[-1])
-
             for seller in self.sellers_list:
                 seller.calcProfit(self.stock_price_history[-1])
+                #print(seller.profit)
+        #for buyer in self.buyers_list:
+        #    print(buyer.id, buyer.profit)
+        #for seller in self.sellers_list:
+        #    print(seller.id, seller.profit)
 
     """Match the Agents buyers and sellers"""
     #Match the Agents buyers and sellers

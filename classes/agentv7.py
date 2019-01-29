@@ -25,8 +25,8 @@ class Agent():
         for i in range(self.strategies.number_of_strategies):
             self.strategy_evaluation.append([])
         self.match_prices = []
+        self.match_count = 0
         self.profit = 0
-        self.penalty = 0
 
         self.positivity = random.random()
         self.positivity = 0
@@ -79,11 +79,11 @@ class Agent():
     #why use match_price[-1] and not match_price.append()?
     def matched(self, price):
         self.match_prices[-1] = price
+        self.match_count += 1
 
     """Calculate profit based on current stock and current marketprice"""	
     def calcProfit(self, marketprice):
         if self.match_prices[-1] == 0:
-            self.profit += self.penalty
             return
 		
         # Can this be removed?
