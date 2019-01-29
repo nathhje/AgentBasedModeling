@@ -8,9 +8,12 @@ Created on Sat Jan 12 09:42:36 2019
 from helpers.modelv4 import Model
 import matplotlib.pyplot as plt
 import numpy as np
+import random
+import csv
 
 def main():
 
+    random.seed = 1
     modelA = Model()
     modelA.make_buyers()
     modelA.make_sellers()
@@ -43,6 +46,9 @@ def main():
     #plt.savefig('results/crossreverence.png')
 
 	#Plot matches
+	
+    print("Hoi")
+	
     plt.scatter(modelA.notes_prices_time_sellers, modelA.notes_prices_sell, s=3, c="blue")
     plt.scatter(modelA.notes_prices_time_buyers, modelA.notes_prices_buy, s=3, c="green")
     plt.scatter(modelA.notes_prices_time_match, modelA.notes_prices_match, s=3, c="orange")
@@ -50,8 +56,19 @@ def main():
     plt.axis(ymin = 0)
     plt.show()
     plt.savefig('results/stock_prices.png')
+	
 
-
-
+    dataset = [["Price", "Time", "Id"]]
+    for agent in modelA.sellers_list:
+        for i in range(len(agent.sell_prices)):
+            temp_list = [agent.sell_prices[i], i, agent.id]
+            dataset.append(temp_list)
+	
+    #print(dataset)
+    with open('data1.csv', 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(dataset)
+	
+	
 if __name__ == "__main__":
     main()
