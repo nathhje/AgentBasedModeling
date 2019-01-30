@@ -1,35 +1,67 @@
-from classes.agentv7 import Agent
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Jan 12 09:42:36 2019
+
+@author: Gebruiker
+"""
+
+from helpers.model_martin import Model
+from helpers.make_csv import make_csv
+import matplotlib.pyplot as plt
+import numpy as np
+import random
+
 
 def main():
-	agent = Agent(True)
-	price_history = [8.0, 9.0, 10.0, 11.0, 11.0]
-	weights = agent.choose_strategy()
-	agent.initial_track_strategies(price_history)
-	agent.choose(price_history, agent.choose_strategy())
-	#print(price_history)
-	#print(agent.sell_prices)
-	price_history.append(agent.sell_prices[-1])
-	agent.track_strategies(price_history)
-	#print(price_history)
-	#agent.choose(price_history)
-	#print(agent.sell_prices)
-	#price_history.append(agent.sell_prices[-1])
-	print(price_history)
+    random_warmup = open("random_warmup.txt", "w")
+    random.seed = 1
+    modelA = Model()
+    modelA.make_buyers()
+    modelA.make_sellers()
+    modelA.run_simulation()
+    random_warmup.write(str(modelA.stock_price_history[:51]))
+    random_warmup.close()
+    plt.figure()
+	##Plot normal stockflow
+
+    #plt.plot(modelA.stock_price_history)
+    #plt.show()
+    #plt.savefig('results/stock_prices.png')
+
+	##Plot correlation
+    #list1, list2 = [], []
+    #for agent in modelA.buyers_list:
+    #    list1.append(agent.profit)
+    #    list2.append(agent.memory)
+    #list3, list4 = [], []
+    #for agent in modelA.sellers_list:
+    #    list3.append(agent.profit)
+    #    list4.append(agent.memory)
+    #print(modelA.time)
+	#
+	#
+    #plt.scatter(list2, list1, c="blue")
+    #plt.scatter(list4, list3, c="green")
+    #plt.ylabel("Profit")
+    #plt.xlabel("Memory")
+    #plt.show()
+    #plt.savefig('results/crossreverence.png')
+
+	#Plot matches
+	
+   
+	
+    plt.scatter(modelA.notes_prices_time_sellers, modelA.notes_prices_sell, s=3, c="blue")
+    plt.scatter(modelA.notes_prices_time_buyers, modelA.notes_prices_buy, s=3, c="green")
+    plt.scatter(modelA.notes_prices_time_match, modelA.notes_prices_match, s=3, c="orange")
+    plt.plot(range(len(modelA.stock_price_history)), modelA.stock_price_history, c="red")
+    plt.axis(ymin = 0)
+    plt.show()
+    plt.savefig('results/stock_prices.png')
+	
+    make_csv(modelA)
+	
+
 	
 if __name__ == "__main__":
     main()
-
-"""from classes.strategiessellers import StrategiesSellers
-import matplotlib.pyplot as plt
-
-def main():
-    
-	history = []
-	history_all = [8, 10, 11, 10]
-	strat_sell = StrategiesSellers()
-	print(strat_sell.sell_predict_weighted_last_n(history, history_all))
-	
-    
-if __name__ == "__main__":
-	main()
-"""
