@@ -8,13 +8,23 @@ Input variables:
 	- number of strategies
 	- positivity
 	- "strategy category"
+		- Prioritize Past vs Present
+		- Single vs many
+- Market level:
+	- memory of all agents
+	- percentage random agents
 
 Output variables:
 - Agent level:
 	- profit
-	- matches
+		- individual
+		- average
+		- of all agents
+		- of non-random agents
+	- number of matches
 - Market level:
-	- stability (some quantitaive measure
+	- stability
+		- variance / standard deviation
 
 Experiments:
 - Memory vs Profit (agent level)
