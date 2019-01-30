@@ -11,18 +11,18 @@
 Input variables:
 
 Agent level:
-memory,
-strategy evaluation memory,
-number of strategies,
-positivity,
-"strategy category"
+- memory,
+- strategy evaluation memory,
+- number of strategies,
+- positivity,
+- "strategy category"
 
 Output variables:
 Agent level:
-profit,
-matches
+- profit,
+- matches
 Market level:
-stability?
+- stability?
 
 Curent ideas and To-Dos:
 Have a look at exponential growth
