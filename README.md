@@ -1,6 +1,30 @@
 # AgentBasedModeling
 
-Curennt ideas and To-Dos:
+- Insert custom made agents --> Jasper
+- Do OFAT (and Sobol?) --> Nathalie
+- Feed in real market data
+	- Find real market data --> Romy
+- Seed different markets to check how agents perform in them
+	- Generate different warming up data sets (increase, decrease, random...) --> Martin
+- Figure out batch runs --> ?
+
+Input variables
+Agent level
+	memory
+	strategy evaluation memory
+	number of strategies
+	positivity
+	"strategy category"
+
+
+Output variables
+Agent level
+	profit
+	matches
+Market level
+	stability?
+
+Curent ideas and To-Dos:
 Have a look at exponential growth
 --> until match up work
 -->  until strategies work
