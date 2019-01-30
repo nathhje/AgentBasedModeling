@@ -1,28 +1,30 @@
 # AgentBasedModeling
 
-- Insert custom made agents --> Jasper
-- Do OFAT (and Sobol?) --> Nathalie
-- Feed in real market data
-	- Find real market data --> Romy
-- Seed different markets to check how agents perform in them
-	- Generate different warming up data sets (increase, decrease, random...) --> Martin
-- Figure out batch runs --> ?
-
+Sensitivity analysis:
 Input variables:
-
 - Agent level:
-	- memory,
-	- strategy evaluation memory,
-	- number of strategies,
-	- positivity,
+	- memory
+	- strategy evaluation memory
+	- number of strategies
+	- positivity
 	- "strategy category"
 
 Output variables:
 - Agent level:
-	- profit,
+	- profit
 	- matches
 - Market level:
-	- stability?
+	- stability (some quantitaive measure
+
+Experiments:
+- Memory vs Profit (agent level)
+- Strategy evaluation memory vs Profit (agent level)
+- Memory vs Match number (agent level)
+- Strategy evaluation memory vs Match number (agent level)
+- Feed in real market data --> So how our market deviates
+- Seed different markets to check how agents perform in them
+
+
 
 Curent ideas and To-Dos:
 Have a look at exponential growth
