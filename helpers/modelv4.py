@@ -12,7 +12,7 @@ import math
 
 class Model():
 
-    def __init__(self):
+    def __init__(self, random_agent):
 
         self.time = 0
         self.end_time = 100
@@ -22,7 +22,7 @@ class Model():
 
         self.number_of_buyers = 100
         self.number_of_sellers = 100
-        self.ratio_of_random_agents = 0.5
+        self.ratio_of_random_agents = random_agent
 		
         self.stock_price_history = [10]
         self.temp_stock_price = 0
@@ -48,21 +48,21 @@ class Model():
     Make the Agents buyers and sellers
     Buyers are False, sellers are True
     """
-    def make_buyers(self):
+    def make_buyers(self,strategy_number):
         for i in range(self.number_of_buyers):
-            self.buyers_list.append(Agent(False, self.id_counter))
+            self.buyers_list.append(Agent(False, self.id_counter, strategy_number))
             self.id_counter += 1
 
-    def make_sellers(self):
+    def make_sellers(self,strategy_number):
         for i in range(self.number_of_sellers):
-            self.sellers_list.append(Agent(True, self.id_counter))
+            self.sellers_list.append(Agent(True, self.id_counter, strategy_number))
             self.id_counter += 1
 
     """Start warming up and running the simulation"""
     def warm_up(self):
         for i in range(self.number_of_wu_agents):
-            self.warm_up_buyers_list.append(Agent(False, self.id_counter))
-            self.warm_up_sellers_list.append(Agent(True, self.id_counter))
+            self.warm_up_buyers_list.append(Agent(False, self.id_counter,1))
+            self.warm_up_sellers_list.append(Agent(True, self.id_counter,1))
 
 		#Warming up period
         while(self.time < self.warming_up_time):
@@ -105,18 +105,18 @@ class Model():
             seller.initial_track_strategies(self.stock_price_history)
 
         while(self.time < self.end_time + self.warming_up_time):
-            for buyer in self.buyers_list[round((self.ratio_of_random_agents*self.number_of_buyers)):]:
+            for buyer in self.buyers_list[int(round((self.ratio_of_random_agents*self.number_of_buyers))):]:
                 buyer.match_prices.append(0)
                 buyer.track_strategies(self.stock_price_history)
                 buyer.buy_prices.append(buyer.choose(self.stock_price_history, buyer.choose_strategy()))
-            for buyer in self.buyers_list[:round((self.ratio_of_random_agents*self.number_of_buyers))]:
+            for buyer in self.buyers_list[:int(round((self.ratio_of_random_agents*self.number_of_buyers)))]:
                 buyer.random_choose(self.stock_price_history)
 
-            for seller in self.sellers_list[round(self.ratio_of_random_agents*self.number_of_sellers):]:
+            for seller in self.sellers_list[int(round(self.ratio_of_random_agents*self.number_of_sellers)):]:
                 seller.match_prices.append(0)
                 seller.track_strategies(self.stock_price_history)
                 seller.sell_prices.append(seller.choose(self.stock_price_history, seller.choose_strategy()))
-            for seller in self.sellers_list[:round(self.ratio_of_random_agents*self.number_of_sellers)]:
+            for seller in self.sellers_list[:int(round(self.ratio_of_random_agents*self.number_of_sellers))]:
                 seller.random_choose(self.stock_price_history)
 
             winning_agents = []

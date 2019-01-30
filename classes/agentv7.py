@@ -12,7 +12,7 @@ from classes.strategiesv3 import Strategies
 
 class Agent():
     
-    def __init__(self, seller, unique_id):
+    def __init__(self, seller, unique_id, strategy_number):
 
         """"define if agent is a seller"""
         self.seller = seller
@@ -20,7 +20,7 @@ class Agent():
 		
         self.buy_prices = []
         self.sell_prices = []
-        self.strategies = Strategies()
+        self.strategies = Strategies(strategy_number)
         self.strategy_evaluation = []
         for i in range(self.strategies.number_of_strategies):
             self.strategy_evaluation.append([])

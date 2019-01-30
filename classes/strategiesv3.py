@@ -3,8 +3,8 @@ import math
 
 class Strategies():
 
-    def __init__(self):
-        self.number_of_strategies = 3
+    def __init__(self, strategy_number):
+        self.number_of_strategies = strategy_number
         self.strategies = []
         self.memory = math.floor(random.random()*80 + 1.)
         #self.memory = 40+1
