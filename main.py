@@ -6,10 +6,11 @@ Created on Sat Jan 12 09:42:36 2019
 """
 
 from helpers.modelv4 import Model
+from helpers.make_csv import make_csv
 import matplotlib.pyplot as plt
 import numpy as np
 import random
-import csv
+
 
 def main():
 
@@ -47,7 +48,7 @@ def main():
 
 	#Plot matches
 	
-    print("Hoi")
+   
 	
     plt.scatter(modelA.notes_prices_time_sellers, modelA.notes_prices_sell, s=3, c="blue")
     plt.scatter(modelA.notes_prices_time_buyers, modelA.notes_prices_buy, s=3, c="green")
@@ -57,19 +58,9 @@ def main():
     plt.show()
     plt.savefig('results/stock_prices.png')
 	
-    print(modelA.sellers_list[0].strategy_index)
+    make_csv(modelA)
 	
-    dataset = [["Price", "Time", "Id"]]
-    for agent in modelA.sellers_list:
-        for i in range(len(agent.sell_prices)):
-            temp_list = [agent.sell_prices[i], i, agent.id]
-            dataset.append(temp_list)
-	
-    #print(dataset)
-    with open('data1.csv', 'w', newline='') as f:
-        writer = csv.writer(f)
-        writer.writerows(dataset)
-	
+
 	
 if __name__ == "__main__":
     main()

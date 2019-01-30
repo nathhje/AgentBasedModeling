@@ -15,7 +15,7 @@ class Model():
     def __init__(self):
 
         self.time = 0
-        self.end_time = 200
+        self.end_time = 100
 
         self.buyers_list = []
         self.sellers_list = []
@@ -28,7 +28,7 @@ class Model():
         self.temp_stock_price = 0
 
         # Warming-up parameters
-        self.warming_up_time = 100
+        self.warming_up_time = 50
         self.number_of_wu_agents = 10
         self.warm_up_buyers_list = []
         self.warm_up_sellers_list = []
@@ -92,24 +92,25 @@ class Model():
         
 
         #Start the real simulation
-
+        
         for buyer in self.buyers_list:
             buyer.initial_track_strategies(self.stock_price_history)
         for seller in self.sellers_list:
             seller.initial_track_strategies(self.stock_price_history)
 
         while(self.time < self.end_time + self.warming_up_time):
+            print(len(self.sellers_list[-1].sell_prices), self.time)
             for buyer in self.buyers_list[round((self.ratio_of_smart_agents*self.number_of_buyers)):]:
                 buyer.match_prices.append(0)
                 buyer.track_strategies(self.stock_price_history)
-                buyer.choose(self.stock_price_history, buyer.choose_strategy())
+                buyer.buy_prices.append(buyer.choose(self.stock_price_history, buyer.choose_strategy()))
             for buyer in self.buyers_list[:round((self.ratio_of_smart_agents*self.number_of_buyers))]:
                 buyer.random_choose(self.stock_price_history)
 
             for seller in self.sellers_list[round(self.ratio_of_smart_agents*self.number_of_sellers):]:
                 seller.match_prices.append(0)
                 seller.track_strategies(self.stock_price_history)
-                seller.choose(self.stock_price_history, seller.choose_strategy())
+                seller.sell_prices.append(seller.choose(self.stock_price_history, seller.choose_strategy()))
             for seller in self.sellers_list[:round(self.ratio_of_smart_agents*self.number_of_sellers)]:
                 seller.random_choose(self.stock_price_history)
 
