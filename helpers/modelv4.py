@@ -99,7 +99,6 @@ class Model():
             seller.initial_track_strategies(self.stock_price_history)
 
         while(self.time < self.end_time + self.warming_up_time):
-            print(len(self.sellers_list[-1].sell_prices), self.time)
             for buyer in self.buyers_list[round((self.ratio_of_smart_agents*self.number_of_buyers)):]:
                 buyer.match_prices.append(0)
                 buyer.track_strategies(self.stock_price_history)

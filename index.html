@@ -18,7 +18,7 @@ body {
   shape-rendering: crispEdges;
 }
 
-.dot {
+circle {
   stroke: #000;
 }
 
@@ -28,131 +28,240 @@ body {
   height: 28px;
   pointer-events: none;
 }
+.stockpriceline {
+  fill: none;
+  stroke: red;
+  stroke-width: 2px;
+}
+
+.sellpriceline {
+  fill: blue;
+  stroke: blue;
+  stroke-width: 2px;
+  opacity: 0.4
+}
+
+.buypriceline {
+  fill: green;
+  stroke: green;
+  stroke-width: 2px;
+  opacity: 0.4
+}
+
+
+
 </style>
 <body>
 <script type="text/javascript" src="http://gc.kis.v2.scr.kaspersky-labs.com/2B8FA506-10E6-DC4A-A2B6-4BFB73929F2C/main.js" charset="UTF-8"></script><script src="https://d3js.org/d3.v3.min.js"></script>
-
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/2B8FA506-10E6-DC4A-A2B6-4BFB73929F2C/main.js" charset="UTF-8"></script><script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
-var margin = {top: 20, right: 20, bottom: 30, left: 40},
+//ScatterPlot
+//var margin = {top: 20, right: 20, bottom: 30, left: 40},
+//    width = 960 - margin.left - margin.right,
+//    height = 500 - margin.top - margin.bottom;
+//
+///* 
+// * value accessor - returns the value to encode for a given data object.
+// * scale - maps value to a visual display encoding, such as a pixel position.
+// * map function - maps from data value to display value
+// * axis - sets up axis
+// */ 
+//
+//// setup x 
+//var xValue = function(d) { return d.Time;}, // data -> value
+//    xScale = d3.scale.linear().range([0, width]), // value -> display
+//    xMap = function(d) { return xScale(xValue(d));}, // data -> display
+//    xAxis = d3.svg.axis().scale(xScale).orient("bottom");
+//
+//// setup y
+//var yValue = function(d) { return d["Price"];}, // data -> value
+//    yScale = d3.scale.linear().range([height, 0]), // value -> display
+//    yMap = function(d) { return yScale(yValue(d));}, // data -> display
+//    yAxis = d3.svg.axis().scale(yScale).orient("left");
+//
+//// setup fill color
+//var cValue = function(d) { return d.Manufacturer;},
+//    color = d3.scale.category10();
+//
+//// add the graph canvas to the body of the webpage
+//var svg = d3.select("body").append("svg")
+//    .attr("width", width + margin.left + margin.right)
+//    .attr("height", height + margin.top + margin.bottom)
+//  .append("g")
+//    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+//
+//// add the tooltip area to the webpage
+//var tooltip = d3.select("body").append("div")
+//    .attr("class", "tooltip")
+//    .style("opacity", 0);
+//
+//// load data
+//d3.csv("data1.csv", function(error, data) {
+//
+//  // change string (from CSV) into number format
+//  data.forEach(function(d) {
+//    d.Price = +d.Price;
+//	d.Time = +d.Time;
+//
+//	//console.log(d);
+//  });
+//
+//  // don't want dots overlapping axis, so add in buffer to data domain
+//  xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
+//  yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
+//
+//  // x-axis
+//  svg.append("g")
+//      .attr("class", "x axis")
+//      .attr("transform", "translate(0," + height + ")")
+//      .call(xAxis)
+//    .append("text")
+//      .attr("class", "label")
+//      .attr("x", width)
+//      .attr("y", -6)
+//      .style("text-anchor", "end")
+//      .text("Time");
+//
+//  // y-axis
+//  svg.append("g")
+//      .attr("class", "y axis")
+//      .call(yAxis)
+//    .append("text")
+//      .attr("class", "label")
+//      .attr("transform", "rotate(-90)")
+//      .attr("y", 6)
+//      .attr("dy", ".71em")
+//      .style("text-anchor", "end")
+//      .text("Price");
+//	  
+//	d3.selection.prototype.moveToFront = function() {
+//		return this.each(function(){
+//			this.parentNode.appendChild(this);
+//		});
+//	};
+//
+//  // draw dots
+//  svg.selectAll(".dot")
+//      .data(data)
+//    .enter().append("circle")
+//      .attr("class", function(d) { return "dot" + d.Id;})
+//      .attr("r", 1)
+//      .attr("cx", xMap)
+//      .attr("cy", yMap)
+//      .style("fill", "blue") 
+//      .on("mouseover", function(d) {
+//          tooltip.transition()
+//               .duration(200)
+//               .style("opacity", .9);
+//          tooltip.html(d["Id"] + "<br/> (" + xValue(d) 
+//	        + ", " + yValue(d) + ")")
+//               .style("left", (d3.event.pageX + 5) + "px")
+//               .style("top", (d3.event.pageY - 28) + "px");
+//      })
+//      .on("mouseout", function(d) {
+//          tooltip.transition()
+//               .duration(500)
+//               .style("opacity", 0);
+//      })
+//	  .on("click", function(d) {
+//          stringid = "." + d3.select(this)["0"]["0"].className.animVal
+//		  console.log(d3.select(this))
+//		  d3.selectAll(stringid).moveToFront()
+//		  if(d3.select(stringid)["0"]["0"].style.fill == "blue"){
+//			d3.selectAll(stringid).attr("r", 3).style("fill","red")}
+//		  else{
+//		  d3.selectAll(stringid).attr("r", 1).style("fill","blue")}
+//			
+//		
+//      });
+//
+//});
+
+//Linegraph
+
+// set the dimensions and margins of the graph
+var margin = {top: 20, right: 20, bottom: 30, left: 50},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-/* 
- * value accessor - returns the value to encode for a given data object.
- * scale - maps value to a visual display encoding, such as a pixel position.
- * map function - maps from data value to display value
- * axis - sets up axis
- */ 
+// parse the date / time
+var parseTime = d3.timeParse("%d-%b-%y");
 
-// setup x 
-var xValue = function(d) { return d.Time;}, // data -> value
-    xScale = d3.scale.linear().range([0, width]), // value -> display
-    xMap = function(d) { return xScale(xValue(d));}, // data -> display
-    xAxis = d3.svg.axis().scale(xScale).orient("bottom");
+// set the ranges
+var x = d3.scaleLinear().range([0, width]);
+var y = d3.scaleLinear().range([height, 0]);
 
-// setup y
-var yValue = function(d) { return d["Price"];}, // data -> value
-    yScale = d3.scale.linear().range([height, 0]), // value -> display
-    yMap = function(d) { return yScale(yValue(d));}, // data -> display
-    yAxis = d3.svg.axis().scale(yScale).orient("left");
+// define the lines
+var stockprice = d3.line()
+    .x(function(d) { return x(d.Time); })
+    .y(function(d) { return y(d.Stockprice); });
 
-// setup fill color
-var cValue = function(d) { return d.Manufacturer;},
-    color = d3.scale.category10();
+var areasell = d3.area()
+    .x(function(d) { return x(d.Time); })
+    .y0(function(d) { return y(d.Minsell);})
+    .y1(function(d) { return y(d.Maxsell); });
+	
+var areabuy = d3.area()
+    .x(function(d) { return x(d.Time); })
+    .y0(function(d) { return y(d.Minbuy);})
+    .y1(function(d) { return y(d.Maxbuy); });
 
-// add the graph canvas to the body of the webpage
+// append the svg obgect to the body of the page
+// appends a 'group' element to 'svg'
+// moves the 'group' element to the top left margin
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
 
-// add the tooltip area to the webpage
-var tooltip = d3.select("body").append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 0);
+// Get the data
+d3.csv("data2.csv", function(error, data) {
+  if (error) throw error;
 
-// load data
-d3.csv("data1.csv", function(error, data) {
-
-  // change string (from CSV) into number format
+  // format the data
   data.forEach(function(d) {
-    d.Price = +d.Price;
-	d.Time = +d.Time;
-
-	//console.log(d);
+      d.Time = +d.Time;
+      d.Stockprice = +d.Stockprice;
+	  d.Maxsell = +d.Maxsell;
+	  d.Minsell = +d.Minsell;
   });
 
-  // don't want dots overlapping axis, so add in buffer to data domain
-  xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
-  yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
+  // Scale the range of the data
+  x.domain(d3.extent(data, function(d) { return d.Time; }));
+  console.log(d3.min(data, function(d) { return d.Maxbuy; }))
+  y.domain([7, d3.max(data, function(d) { return d.Maxsell; })]);
 
-  // x-axis
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis)
-    .append("text")
-      .attr("class", "label")
-      .attr("x", width)
-      .attr("y", -6)
-      .style("text-anchor", "end")
-      .text("Time");
 
-  // y-axis
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-    .append("text")
-      .attr("class", "label")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Price");
+    svg.append("path")
+      .data([data])
+      .attr("class", "sellpriceline")
+      .attr("d", areasell);
 	  
-	d3.selection.prototype.moveToFront = function() {
-		return this.each(function(){
-			this.parentNode.appendChild(this);
-		});
-	};
+    svg.append("path")
+      .data([data])
+      .attr("class", "buypriceline")
+      .attr("d", areabuy);
 
-  // draw dots
-  svg.selectAll(".dot")
-      .data(data)
-    .enter().append("circle")
-      .attr("class", function(d) { return "dot" + d.Id;})
-      .attr("r", 1)
-      .attr("cx", xMap)
-      .attr("cy", yMap)
-      .style("fill", "blue") 
-      .on("mouseover", function(d) {
-          tooltip.transition()
-               .duration(200)
-               .style("opacity", .9);
-          tooltip.html(d["Id"] + "<br/> (" + xValue(d) 
-	        + ", " + yValue(d) + ")")
-               .style("left", (d3.event.pageX + 5) + "px")
-               .style("top", (d3.event.pageY - 28) + "px");
-      })
-      .on("mouseout", function(d) {
-          tooltip.transition()
-               .duration(500)
-               .style("opacity", 0);
-      })
-	  .on("click", function(d) {
-          stringid = "." + d3.select(this)["0"]["0"].className.animVal
-		  console.log(d3.select(this))
-		  d3.selectAll(stringid).moveToFront()
-		  if(d3.select(stringid)["0"]["0"].style.fill == "blue"){
-			d3.selectAll(stringid).attr("r", 3).style("fill","red")}
-		  else{
-		  d3.selectAll(stringid).attr("r", 1).style("fill","blue")}
-			
-		
-      });
+  // Add the valueline path.
+  svg.append("path")
+      .data([data])
+      .attr("class", "stockpriceline")
+      .attr("d", stockprice);
+	  
+
+  // Add the X Axis
+  svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+  // Add the Y Axis
+  svg.append("g")
+      .call(d3.axisLeft(y));
 
 });
+
 
 </script>
 </body>
