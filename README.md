@@ -19,10 +19,10 @@ Input variables:
 
 Output variables:
 - Agent level:
-- profit,
+	- profit,
 	- matches
 - Market level:
-- stability?
+	- stability?
 
 Curent ideas and To-Dos:
 Have a look at exponential growth
