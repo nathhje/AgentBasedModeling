@@ -18,11 +18,11 @@ Input variables:
 	- "strategy category"
 
 Output variables:
--Agent level:
-	- profit,
+- Agent level:
+- profit,
 	- matches
--Market level:
-	- stability?
+- Market level:
+- stability?
 
 Curent ideas and To-Dos:
 Have a look at exponential growth
