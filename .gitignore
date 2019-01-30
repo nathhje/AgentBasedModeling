@@ -1,8 +1,3 @@
-data1.csv
-data2.csv
-data3.csv
-data4.csv
-data5.csv
-data\d+.csv
+data[0-9]+.csv
 *.pyc
 *.pyc
