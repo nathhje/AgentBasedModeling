@@ -63,10 +63,8 @@ class Agent():
 
     """pick the one of the strategies that would have performed the best within strategy_evaluation_memory"""
     def choose_strategy(self):
-        print('choose strategy')
-        print(self.strategy_evaluation)
+        
         strategy_evaluation_sums = [sum(i) for i in self.strategy_evaluation]
-        print(strategy_evaluation_sums)
         index = strategy_evaluation_sums.index(min(strategy_evaluation_sums))
         self.strategy_index.append(index)
         #random strategy

@@ -37,18 +37,16 @@ class Strategies():
     def nextPoint(self, weightList, setPoints):
         #to avoid index out of range errors, visionRange is set to the length of weightList or the length of setPoints, 
         #depending on whatever has the smaller value. This allows it to theoretically run with less data than the memory can store
-        #print(weightList, setPoints)
+        
         visionRange = min(len(weightList),len(setPoints)-1)
         if visionRange < 1:
             return setPoints[-1]
-        #print('nextpoint')
 
         newpoint = setPoints[-visionRange - 1]
         weightList = self.normalize_weights(weightList[-visionRange:])
         for i in reversed(range(visionRange)):
             b = -(i + 1)
             newpoint += weightList[b]*(setPoints[b] - setPoints[b-1])
-            #print(weightList[b], setPoints[b] - setPoints[b-1])
 			
         return newpoint
 
