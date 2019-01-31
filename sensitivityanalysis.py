@@ -14,7 +14,9 @@ from SALib.sample import saltelli
 from SALib.analyze import sobol
 import numpy as np
 
+
 def main():
+    random.seed(3)
     
     problem, params = createProblem()
     
