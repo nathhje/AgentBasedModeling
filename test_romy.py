@@ -32,6 +32,75 @@ import seaborn as sns
 #Experiment x: which strategy works the best for the buyers?
 #Experiment x: Which strategy works the best for the sellers?
 
+"""Experiment 1: Memory and profit over time"""
+def experiment1():
+    memory = [x for x in range(1,6)]
+    memory = [1, 5, 10, 30]
+    plt.figure()
+
+    for i in memory:
+        modelA = main()
+        profit_buyer, profit_seller = [], []
+        for agent in modelA.buyers_list:
+            agent.strategies.memory= i
+            profit_buyer.append(agent.profit)
+        for agent in modelA.sellers_list:
+            agent.strategies.memory = i
+            profit_seller.append(agent.profit)
+        # index_nr = memory.index(i)
+        plt.plot(range(len(profit_buyer)), profit_buyer, label='Buyer m =' + str(i))
+        plt.plot(range(len(profit_seller)), profit_seller, label='Seller m =' + str(i))
+    plt.title('The profits of agents with different memory')
+    plt.xlabel('Time')
+    plt.ylabel('Profit')
+    plt.legend(loc='best')
+    plt.savefig('results/experiment1.png')
+    plt.show()
+
+
+"""Experiment 2: Boxplot memory vs profit"""
+def experiment2():
+    #Example: http://seaborn.pydata.org/examples/grouped_boxplot.html
+    memory, profit, agents = [], [], []
+    memories = [x for x in range(1,6)]
+    memories = [1,10,20,30]
+    random.seed(1)
+
+    for i in memories:
+        modelA = Model(0.5)
+        modelA.make_buyers(3)
+        modelA.make_sellers(3)
+        for agent in modelA.buyers_list:
+            agent.strategies.memory = i
+            memory.append(i)
+        for agent in modelA.sellers_list:
+            agent.strategies.memory = i
+            memory.append(i)
+
+        modelA.run_simulation()
+
+        for agent in modelA.buyers_list:
+            profit.append(agent.profit)
+            agents.append('Buyer')
+        for agent in modelA.sellers_list:
+            profit.append(agent.profit)
+            agents.append('Seller')
+
+    #Make dataframe and boxplot the results
+    sns.set(style="ticks", palette="pastel")
+    data = {'Agents': agents, 'Memory': memory, 'Profit': profit}
+    df = pd.DataFrame(data, columns=['Agents','Memory','Profit'])
+    sns.boxplot(x="Memory", y="Profit",
+                hue="Agents", palette=["m", "g"], data=df)
+    sns.despine(offset=10, trim=True)
+    plt.savefig('results/experiment3.png')
+    plt.show()
+
+#def experimentx():
+    #Experiment 2 - Strategy evaluation memory vs Profit (agent level)
+    #experiment 1 with strategy_evaluation_memory
+
+"""Experiment 3: Artificial and real stock market"""
 def run_real_market():
     #Import the data csv file
     #Dataset obtained from: https://www.kaggle.com/borismarjanovic/price-volume-data-for-all-us-stocks-etfs/home
@@ -70,98 +139,7 @@ def run_real_market():
     prices = df['Price'].tolist()
     return dates, prices
 
-
-def experiment1(modelA):
-    #Experiment 1 - memory and profit over time
-    memory = [x for x in range(1,6)]
-    memory = [1, 5, 10, 30]
-    plt.figure()
-
-    for i in memory:
-        profit_buyer, profit_seller = [], []
-        for agent in modelA.buyers_list:
-            agent.strategies.memory= i
-            profit_buyer.append(agent.profit)
-        for agent in modelA.sellers_list:
-            agent.strategies.memory = i
-            profit_seller.append(agent.profit)
-        # index_nr = memory.index(i)
-        plt.plot(range(len(profit_buyer)), profit_buyer, label='Buyer m =' + str(i))
-        plt.plot(range(len(profit_seller)), profit_seller, label='Seller m =' + str(i))
-    plt.title('The profits of agents with different memory')
-    plt.xlabel('Time')
-    plt.ylabel('Profit')
-    plt.legend(loc='best')
-    plt.savefig('results/experiment1.png')
-    plt.show()
-
-def experiment2(modelA):
-    #Experiment 2 - memory vs profit
-    memory_buyer, profit_buyer = [], []
-    memory_seller, profit_seller = [], []
-    memory = [x for x in range(1,60,10)]
-    plt.figure()
-
-    for i in memory:
-        for agent in modelA.buyers_list:
-            agent.strategies.memory = i
-            memory_buyer.append(agent.strategies.memory)
-            profit_buyer.append(agent.profit)
-        for agent in modelA.sellers_list:
-            agent.strategies.memory = i
-            memory_seller.append(agent.strategies.memory)
-            profit_seller.append(agent.profit)
-        plt.scatter(memory_buyer, profit_buyer, c='red', label='Buyer m =' + str(i))
-        plt.scatter(memory_seller, profit_seller, c='blue',label='Seller m =' + str(i))
-    plt.title('Memory and profit')
-    plt.xlabel('Memory')
-    plt.ylabel('Profit')
-    plt.legend(loc='best')
-    plt.savefig('results/experiment2.png')
-    plt.show()
-
-def experiment3(modelA):
-    #Experiment 3 - boxplot
-    #Example: http://seaborn.pydata.org/examples/grouped_boxplot.html
-    memory, profit, agents = [], [], []
-
-    memories = [x for x in range(1,6)]
-
-    for i in memories:
-        for agent in modelA.buyers_list:
-            agent.strategies.memory = i
-            memory.append(agent.strategies.memory)
-            profit.append(float(agent.profit))
-            agents.append('Buyer')
-        for agent in modelA.sellers_list:
-            agent.strategies.memory = i
-            memory.append(agent.strategies.memory)
-            profit.append(float(agent.profit))
-            agents.append('Seller')
-
-    sns.set(style="ticks", palette="pastel")
-
-    # x = memory
-    # y = profit
-    # hue = buyer/seller
-    data = {'agents': agents, 'memory': memory, 'profit': profit}
-    df = pd.DataFrame(data, columns=['agents','memory','profit'])
-    print(df)
-    sns.boxplot(x="memory", y="profit",
-                hue="agents", palette=["m", "g"], data=df)
-    sns.despine(offset=10, trim=True)
-    plt.show()
-    plt.savefig('results/experiment4.png')
-    #WHAAAAAAAHHH IT DOESNT WORK
-
-
-#def experiment4(modelA):
-    #Experiment 2 - Strategy evaluation memory vs Profit (agent level)
-    #experiment 1 with strategy_evaluation_memory
-
-
-def experiment5(modelA):
-    #Experiment 4: Agent and real stock market
+def experiment3():
     plt.figure()
 
     dates, prices = run_real_market()
@@ -170,27 +148,23 @@ def experiment5(modelA):
     plt.xlabel('Date')
     plt.ylabel('Price')
     plt.legend(loc='best')
-    plt.savefig('results/experiment4.png')
+    plt.savefig('results/experiment5.png')
     plt.show()
 
 
-
-### START PROGRAM ###
+"""START PROGRAM"""
 def main():
-
-    random.seed = 1
+    random.seed(1)
     modelA = Model(0.5)
     modelA.make_buyers(3)
     modelA.make_sellers(3)
     modelA.run_simulation()
-
-    # run experiments
-    # experiment1(modelA)
-    # experiment2(modelA)
-    experiment3(modelA)
-    # experiment4(modelA)
-    # experiment5(modelA)
-
+    return modelA
 
 if __name__ == "__main__":
-    main()
+    # run experiments
+    # experiment1()
+    # experiment2()
+    # experiment3()
+    # experiment4()
+    # experiment5()
