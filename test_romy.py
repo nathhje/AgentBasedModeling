@@ -12,6 +12,7 @@ import numpy as np
 import random
 import pandas as pd
 import seaborn as sns
+from datetime import datetime
 
 #CHECK EXPERIMENTS ON GITHUB:
 # Memory vs Profit (agent level)
@@ -59,32 +60,39 @@ def experiment1():
 
 
 """Experiment 2: Boxplot memory vs profit"""
-def experiment2():
+def experiment2(iterations):
     #Example: http://seaborn.pydata.org/examples/grouped_boxplot.html
     memory, profit, agents = [], [], []
     memories = [x for x in range(1,6)]
     memories = [1,10,20,30]
     random.seed(1)
 
-    for i in memories:
-        modelA = Model(0.5)
-        modelA.make_buyers(3)
-        modelA.make_sellers(3)
-        for agent in modelA.buyers_list:
-            agent.strategies.memory = i
-            memory.append(i)
-        for agent in modelA.sellers_list:
-            agent.strategies.memory = i
-            memory.append(i)
+    for j in range(iterations):
+        print('start iteration', j+1)
+        time = datetime.now()
+        for i in memories:
+            modelA = Model(0.5)
+            modelA.make_buyers(3)
+            modelA.make_sellers(3)
+            for agent in modelA.buyers_list:
+                agent.strategies.memory = i
+            for agent in modelA.sellers_list:
+                agent.strategies.memory = i
 
-        modelA.run_simulation()
+            modelA.run_simulation()
 
-        for agent in modelA.buyers_list:
-            profit.append(agent.profit)
-            agents.append('Buyer')
-        for agent in modelA.sellers_list:
-            profit.append(agent.profit)
-            agents.append('Seller')
+            for agent in modelA.buyers_list:
+                if agent.random == False:
+                    profit.append(agent.profit)
+                    agents.append('Buyer')
+                    memory.append(i)
+            for agent in modelA.sellers_list:
+                if agent.random == False:
+                    profit.append(agent.profit)
+                    agents.append('Seller')
+                    memory.append(i)
+        past = datetime.now()-time
+        print(past.seconds, 'seconds needed')
 
     #Make dataframe and boxplot the results
     sns.set(style="ticks", palette="pastel")
@@ -164,7 +172,7 @@ def main():
 if __name__ == "__main__":
     # run experiments
     # experiment1()
-    # experiment2()
+    experiment2(5)
     # experiment3()
     # experiment4()
     # experiment5()
