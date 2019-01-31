@@ -29,22 +29,37 @@ class Agent():
         self.profit = 0
 
         self.positivity = random.random()
-        #self.positivity = 0
 		
         self.strategy_index = []
+        self.random = False
 
     """Warming up period, random choosing"""
     def random_choose(self, stock_price_history):
+        self.random = True
         self.match_prices.append(0)
         self.strategy_index.append(0)
         if self.seller == True:
-            sell_price = stock_price_history[-1] + random.random() - 0.4
+            sell_price = stock_price_history[-1] + 5 * (random.random() - 0.4)
             self.sell_prices.append(sell_price)
             return sell_price
         else:
-            buy_price = stock_price_history[-1] + random.random() - 0.6
+            buy_price = stock_price_history[-1] + 5 * (random.random() - 0.6)
             self.buy_prices.append(buy_price)
             return buy_price
+
+		#if len(stock_price_history) == 1:
+        #    smart_guess = stock_price_history[-1]
+        #else:
+        #    smart_guess = 2 * stock_price_history[-1] - stock_price_history[-2]
+        #
+        #if self.seller == True:
+        #    sell_price = smart_guess + 2 * (random.random() - 0.4)
+        #    self.sell_prices.append(sell_price)
+        #    return sell_price
+        #else:
+        #    buy_price = smart_guess + 2 * (random.random() - 0.6)
+        #    self.buy_prices.append(buy_price)
+        #    return buy_price
 
     """pick the one of the strategies that would have performed the best within strategy_evaluation_memory"""
     def choose_strategy(self):

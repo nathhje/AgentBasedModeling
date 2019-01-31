@@ -14,7 +14,6 @@ import random
 
 def main():
 
-    random.seed = 1
     modelA = Model(0.5)
     modelA.make_buyers(3)
     modelA.make_sellers(3)
