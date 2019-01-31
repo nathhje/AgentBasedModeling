@@ -34,29 +34,69 @@ from datetime import datetime
 #Experiment x: Which strategy works the best for the sellers?
 
 """Experiment 1: Memory and profit over time"""
-def experiment1():
-    memory = [x for x in range(1,6)]
-    memory = [1, 5, 10, 30]
-    plt.figure()
+def experiment1(iterations):
+    memory, profit, average_profit, agents, time = [], [], [], [], []
+    memories = [x for x in range(1,6)]
+    memories = [1, 5, 10, 30]
+    random.seed(1)
+    # plt.figure()
 
-    for i in memory:
-        modelA = main()
-        profit_buyer, profit_seller = [], []
-        for agent in modelA.buyers_list:
-            agent.strategies.memory= i
-            profit_buyer.append(agent.profit)
-        for agent in modelA.sellers_list:
-            agent.strategies.memory = i
-            profit_seller.append(agent.profit)
+    for i in range(iterations):
+        for j in memories:
+            modelA = Model(0.5)
+            modelA.make_buyers(3)
+            modelA.make_sellers(3)
+            # profit_buyer, profit_seller = [], []
+            for agent in modelA.buyers_list:
+                agent.strategies.memory= j
+                # profit_buyer.append(agent.profit)
+            for agent in modelA.sellers_list:
+                agent.strategies.memory = j
+                # profit_seller.append(agent.profit)
         # index_nr = memory.index(i)
-        plt.plot(range(len(profit_buyer)), profit_buyer, label='Buyer m =' + str(i))
-        plt.plot(range(len(profit_seller)), profit_seller, label='Seller m =' + str(i))
-    plt.title('The profits of agents with different memory')
-    plt.xlabel('Time')
-    plt.ylabel('Profit')
-    plt.legend(loc='best')
-    plt.savefig('results/experiment1.png')
+            modelA.run_simulation()
+
+            timepoint = 0
+            for agent in modelA.buyers_list:
+                memory.append(j)
+                profit.append(agent.profit)
+                agents.append('Buyer')
+                timepoint += 1
+                time.append(timepoint)
+            for agent in modelA.sellers_list:
+                memory.append(j)
+                profit.append(agent.profit)
+                agents.append('Seller')
+                timepoint += 1
+                time.append(timepoint)
+
+            for i in profit:
+                average_profit.append(i)
+
+
+    #Make dataframe and show the results
+    sns.set(style="darkgrid")
+    data = {'Agents': agents, 'Memory': memory, 'Profit': profit,
+            'Average_p': average_profit }
+    df = pd.DataFrame(data, columns=['Agents','Memory','Profit', 'Average_p'])
+    sns.lineplot(x="Time", y="Average_p",
+                 hue="Profit", style="Memory",
+                 data=data)
     plt.show()
+
+
+    #     plt.plot(range(len(profit_buyer)), profit_buyer, label='Buyer m =' + str(j))
+    #     plt.plot(range(len(profit_seller)), profit_seller, label='Seller m =' + str(j))
+    # plt.title('The profits of agents with different memory')
+    # plt.xlabel('Time')
+    # plt.ylabel('Profit')
+    # plt.legend(loc='best')
+    # plt.savefig('results/experiment1.png')
+    # plt.show()
+
+# def experimentx(iterations):
+    #BEST STRATEGY
+    #NEED memory and weight
 
 
 """Experiment 2: Boxplot memory vs profit"""
@@ -171,8 +211,8 @@ def main():
 
 if __name__ == "__main__":
     # run experiments
-    # experiment1()
-    experiment2(5)
+    experiment1(2)
+    # experiment2(5)
     # experiment3()
     # experiment4()
     # experiment5()
