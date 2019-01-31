@@ -15,7 +15,7 @@ class Model():
     def __init__(self, random_agent):
 
         self.time = 0
-        self.end_time = 1000
+        self.end_time = 400
 
         self.buyers_list = []
         self.sellers_list = []
@@ -33,7 +33,7 @@ class Model():
 
         # Warming-up parameters
         self.warm_up_type = [0,0]
-        self.warming_up_time = 50
+        self.warming_up_time = 100
         self.number_of_wu_agents = 40
         self.warm_up_buyers_list = []
         self.warm_up_sellers_list = []
@@ -109,11 +109,11 @@ class Model():
             self.time += 1
 
     def run_simulation(self):
-        #self.warm_up()
-        for i in range(90):
-            self.time += 1
-            #self.stock_price_history.append(self.stock_price_history[-1] + 0.05 )
-            self.stock_price_history.append(self.stock_price_history[-1] + 2 * math.sin(i * math.pi / 17))
+        self.warm_up()
+        #for i in range(90):
+        #    self.time += 1
+        #    #self.stock_price_history.append(self.stock_price_history[-1] + 0.05 )
+        #    self.stock_price_history.append(self.stock_price_history[-1] + 2 * math.sin(i * math.pi / 17))
         
 
         #Start the real simulation
@@ -135,7 +135,7 @@ class Model():
             for seller in self.sellers_list:
                 if not seller.random:
                     seller.match_prices.append(0)
-				    seller.track_strategies(self.stock_price_history, self.best_sell_price[-1])
+                    seller.track_strategies(self.stock_price_history, self.best_sell_price[-1])
                     seller.sell_prices.append(seller.choose(self.stock_price_history, seller.choose_strategy()))
                 else:
                     seller.random_choose(self.stock_price_history)
@@ -192,7 +192,7 @@ class Model():
         for i in range(len(temp_sellers)):
             for j in range(len(temp_buyers)):
                 if temp_sellers[i].sell_prices[-1] <= temp_buyers[j].buy_prices[-1]:
-					
+                    print(temp_sellers[i].sell_prices[-1], temp_buyers[j].buy_prices[-1])
                     #Find the best prices each turn
                     if self.best_sell_price[-1] < temp_sellers[i].sell_prices[-1]:
                         self.best_sell_price[-1] = temp_sellers[i].sell_prices[-1]
