@@ -63,7 +63,10 @@ class Agent():
 
     """pick the one of the strategies that would have performed the best within strategy_evaluation_memory"""
     def choose_strategy(self):
+        print('choose strategy')
+        print(self.strategy_evaluation)
         strategy_evaluation_sums = [sum(i) for i in self.strategy_evaluation]
+        print(strategy_evaluation_sums)
         index = strategy_evaluation_sums.index(min(strategy_evaluation_sums))
         self.strategy_index.append(index)
         #random strategy
@@ -137,7 +140,7 @@ class Agent():
     def track_strategies(self, stock_price_history):
         #checks whether the max_lenght is already reached. If so, the first element is removed before a new last element is added
         for i in range(len(self.strategy_evaluation)):
-            if self.strategies.strategy_evaluation_memory - 1 == len(self.strategy_evaluation[i]):
+            if self.strategies.strategy_evaluation_memory == len(self.strategy_evaluation[i]):
                 self.strategy_evaluation[i].pop(0)
             #print(stock_price_history[:-1])
             self.strategy_evaluation[i].append(abs(self.choose(stock_price_history[:-1],self.strategies.strategies[i]) - stock_price_history[-1]))
