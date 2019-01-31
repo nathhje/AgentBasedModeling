@@ -11,8 +11,7 @@ class Strategies():
         #evaluation memory is acutally one lower than the chard coded number. This should be fixed at some point
         self.strategy_evaluation_memory = 2+1
         #strategy_evaluation_memory can not exceed memory
-        if self.strategy_evaluation_memory < self.memory:
-            self.memory = self.strategy_evaluation_memory
+        self.memory = min(self.strategy_evaluation_memory, self.memory)
         self.create_strategies(self.memory)
 
     """create 5 stategies for each agent. Each strategy has a different memory and a weight to each element in the memory"""
@@ -21,10 +20,8 @@ class Strategies():
             self.strategies.append(self.setWeights(memory))
 
     def normalize_weights(self, weights):
-        sumW = sum(weights)
-        lenW = len(weights)
         for i in range(len(weights)):
-            weights[i] = weights[i]/sumW*(lenW + 1)
+            weights[i] = weights[i]/sum(weights)*(len(weights) + 1)
         return weights
 
     """For each point in the memory, a weight is given"""
