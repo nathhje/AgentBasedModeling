@@ -32,10 +32,11 @@ def main():
 
 def createProblem():
     problem = {
-            'num_vars': 2,
-            'names': ['ratio_of_smart_agents', 'number_of_strategies'],
+            'num_vars': 3,
+            'names': ['ratio_of_smart_agents', 'number_of_strategies', 'memory'],
             'bounds': [[0.3, 0.7],
-                       [2., 10.]]
+                       [2., 10.],
+                       [2., 50.]]
             }
     
     param_values = saltelli.sample(problem, 4)
