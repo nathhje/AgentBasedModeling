@@ -123,37 +123,39 @@ def experiment2(modelA):
 def experiment3(modelA):
     #Experiment 3 - boxplot
     #Example: http://seaborn.pydata.org/examples/grouped_boxplot.html
-    has_memory, has_profit, agent_list = [], [], []
+    memory, profit, agents = [], [], []
 
-    memory = [x for x in range(1,6)]
+    memories = [x for x in range(1,6)]
 
-    for i in memory:
+    for i in memories:
         for agent in modelA.buyers_list:
             agent.strategies.memory = i
-            has_memory.append(agent.strategies.memory)
-            has_profit.append(agent.profit)
-            agent_list.append('Buyer')
+            memory.append(agent.strategies.memory)
+            profit.append(float(agent.profit))
+            agents.append('Buyer')
         for agent in modelA.sellers_list:
             agent.strategies.memory = i
-            has_memory.append(agent.strategies.memory)
-            has_profit.append(agent.profit)
-            agent_list.append('Seller')
+            memory.append(agent.strategies.memory)
+            profit.append(float(agent.profit))
+            agents.append('Seller')
 
     sns.set(style="ticks", palette="pastel")
 
     # x = memory
     # y = profit
     # hue = buyer/seller
-    df = pd.DataFrame(np.column_stack([agent_list, has_memory, has_profit]), columns=['agent_list','has_memory','has_profit'])
+    data = {'agents': agents, 'memory': memory, 'profit': profit}
+    df = pd.DataFrame(data, columns=['agents','memory','profit'])
     print(df)
-    sns.boxplot(x="has_memory", y="has_profit",
-                hue="agent_list", palette=["m", "g"], data=df)
+    sns.boxplot(x="memory", y="profit",
+                hue="agents", palette=["m", "g"], data=df)
     sns.despine(offset=10, trim=True)
     plt.show()
+    plt.savefig('results/experiment4.png')
     #WHAAAAAAAHHH IT DOESNT WORK
 
 
-def experiment4(modelA):
+#def experiment4(modelA):
     #Experiment 2 - Strategy evaluation memory vs Profit (agent level)
     #experiment 1 with strategy_evaluation_memory
 
@@ -185,7 +187,7 @@ def main():
     # run experiments
     # experiment1(modelA)
     # experiment2(modelA)
-    # experiment3(modelA)
+    experiment3(modelA)
     # experiment4(modelA)
     # experiment5(modelA)
 
