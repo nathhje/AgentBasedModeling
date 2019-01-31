@@ -12,7 +12,7 @@ from classes.strategiesv3 import Strategies
 
 class Agent():
     
-    def __init__(self, seller, unique_id, strategy_number):
+    def __init__(self, seller, unique_id, strategy_number, isitrandom):
 
         """"define if agent is a seller"""
         self.seller = seller
@@ -31,11 +31,11 @@ class Agent():
         self.positivity = random.random()
 		
         self.strategy_index = []
-        self.random = False
+        self.random = isitrandom
 
     """Warming up period, random choosing"""
     def random_choose(self, stock_price_history):
-        self.random = True
+        
         self.match_prices.append(0)
         self.strategy_index.append(0)
         if self.seller == True:

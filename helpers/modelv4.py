@@ -52,21 +52,36 @@ class Model():
     Make the Agents buyers and sellers
     Buyers are False, sellers are True
     """
-    def make_buyers(self,strategy_number):
-        for i in range(self.number_of_buyers):
-            self.buyers_list.append(Agent(False, self.id_counter, strategy_number))
+    def make_buyers(self,strategy_number,allrandom=False):
+        randoms = int(round((self.ratio_of_random_agents*self.number_of_buyers)))
+        
+        for i in range(randoms):
+            self.buyers_list.append(Agent(False, self.id_counter, strategy_number,True))
+            self.id_counter += 1
+            
+        
+        for i in range(self.number_of_sellers-randoms):
+            self.buyers_list.append(Agent(False, self.id_counter, strategy_number,False))
             self.id_counter += 1
 
-    def make_sellers(self,strategy_number):
-        for i in range(self.number_of_sellers):
-            self.sellers_list.append(Agent(True, self.id_counter, strategy_number))
+    def make_sellers(self,strategy_number,allrandom=False):
+        
+        randoms = int(round((self.ratio_of_random_agents*self.number_of_sellers)))
+        
+        for i in range(randoms):
+            self.sellers_list.append(Agent(True, self.id_counter, strategy_number,True))
+            self.id_counter += 1
+            
+        
+        for i in range(self.number_of_sellers-randoms):
+            self.sellers_list.append(Agent(True, self.id_counter, strategy_number,False))
             self.id_counter += 1
 
     """Start warming up and running the simulation"""
     def warm_up(self):
         for i in range(self.number_of_wu_agents):
-            self.warm_up_buyers_list.append(Agent(False, self.id_counter,1))
-            self.warm_up_sellers_list.append(Agent(True, self.id_counter,1))
+            self.warm_up_buyers_list.append(Agent(False, self.id_counter,1,True))
+            self.warm_up_sellers_list.append(Agent(True, self.id_counter,1,True))
 
 		#Warming up period
         while(self.time < self.warming_up_time):
@@ -109,20 +124,21 @@ class Model():
             seller.initial_track_strategies(self.stock_price_history)
 
         while(self.time < self.end_time + self.warming_up_time):
-            for buyer in self.buyers_list[int(round((self.ratio_of_random_agents*self.number_of_buyers))):]:
-                print(buyer.strategy_evaluation)
-                buyer.match_prices.append(0)
-                buyer.track_strategies(self.stock_price_history, self.best_buy_price[-1])
-                buyer.buy_prices.append(buyer.choose(self.stock_price_history, buyer.choose_strategy()))
-            for buyer in self.buyers_list[:int(round((self.ratio_of_random_agents*self.number_of_buyers)))]:
-                buyer.random_choose(self.stock_price_history)
+            for buyer in self.buyers_list:
+                if not buyer.random:
+                    buyer.match_prices.append(0)
+                    buyer.track_strategies(self.stock_price_history, self.best_buy_price[-1])
+                    buyer.buy_prices.append(buyer.choose(self.stock_price_history, buyer.choose_strategy()))
+                else:
+                    buyer.random_choose(self.stock_price_history)
 
-            for seller in self.sellers_list[int(round(self.ratio_of_random_agents*self.number_of_sellers)):]:
-                seller.match_prices.append(0)
-                seller.track_strategies(self.stock_price_history, self.best_sell_price[-1])
-                seller.sell_prices.append(seller.choose(self.stock_price_history, seller.choose_strategy()))
-            for seller in self.sellers_list[:int(round(self.ratio_of_random_agents*self.number_of_sellers))]:
-                seller.random_choose(self.stock_price_history)
+            for seller in self.sellers_list:
+                if not seller.random:
+                    seller.match_prices.append(0)
+				    seller.track_strategies(self.stock_price_history, self.best_sell_price[-1])
+                    seller.sell_prices.append(seller.choose(self.stock_price_history, seller.choose_strategy()))
+                else:
+                    seller.random_choose(self.stock_price_history)
 
             winning_agents = []
             temp_buyers = self.buyers_list.copy()
