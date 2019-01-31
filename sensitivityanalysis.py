@@ -16,7 +16,7 @@ import numpy as np
 
 
 def main():
-    random.seed(3)
+    random.seed(5)
     
     problem, params = createProblem()
     
@@ -25,7 +25,7 @@ def main():
     for i, X in enumerate(params):
         Y[i] = evaluate_model(X)
         
-    si = sobol.analyze(problem,Y)
+    si = sobol.analyze(problem,Y,print_to_console=True)
     
     print(si['S1'])
     print(si['S2'])
@@ -50,6 +50,11 @@ def evaluate_model(inputs):
     
     model.make_buyers(int(round(inputs[1])))
     model.make_sellers(int(round(inputs[1])))
+    
+    for buyer in model.buyers_list:
+        buyer.memory = inputs[2]
+    for seller in model.sellers_list:
+        seller.memory = inputs[2]
     model.run_simulation()
     
     profit = 0
