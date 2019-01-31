@@ -127,10 +127,14 @@ class Model():
             for buyer in self.buyers_list:
                 if not buyer.random:
                     buyer.match_prices.append(0)
-                    buyer.track_strategies(self.stock_price_history, self.best_buy_price[-1])
+                    if(int(self.time)%5 == 0):
+                        buyer.track_strategies(self.stock_price_history, self.best_buy_price[-1])
                     buyer.buy_prices.append(buyer.choose(self.stock_price_history, buyer.choose_strategy()))
                 else:
-                    buyer.random_choose(self.stock_price_history)
+                    if random.random() > 0.5:
+                        buyer.fixed_choose(self.stock_price_history)
+                    else:
+                        buyer.random_choose(self.stock_price_history)
 
             for seller in self.sellers_list:
                 if not seller.random:
@@ -138,7 +142,10 @@ class Model():
                     seller.track_strategies(self.stock_price_history, self.best_sell_price[-1])
                     seller.sell_prices.append(seller.choose(self.stock_price_history, seller.choose_strategy()))
                 else:
-                    seller.random_choose(self.stock_price_history)
+                    if random.random() > 0.5:
+                        seller.fixed_choose(self.stock_price_history)
+                    else:
+                        seller.random_choose(self.stock_price_history)
 
             winning_agents = []
             temp_buyers = self.buyers_list.copy()
@@ -192,7 +199,6 @@ class Model():
         for i in range(len(temp_sellers)):
             for j in range(len(temp_buyers)):
                 if temp_sellers[i].sell_prices[-1] <= temp_buyers[j].buy_prices[-1]:
-                    print(temp_sellers[i].sell_prices[-1], temp_buyers[j].buy_prices[-1])
                     #Find the best prices each turn
                     if self.best_sell_price[-1] < temp_sellers[i].sell_prices[-1]:
                         self.best_sell_price[-1] = temp_sellers[i].sell_prices[-1]
