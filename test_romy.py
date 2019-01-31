@@ -33,7 +33,7 @@ from datetime import datetime
 #Experiment x: which strategy works the best for the buyers?
 #Experiment x: Which strategy works the best for the sellers?
 
-"""Experiment 1: Memory and profit over time"""
+"""Experiment 1: Memory and profit over time""" #STRANGE
 def experiment1(iterations):
     memory, profit, average_profit, agents, time = [], [], [], [], []
     memories = [x for x in range(1,6)]
@@ -63,6 +63,11 @@ def experiment1(iterations):
                 agents.append('Buyer')
                 timepoint += 1
                 time.append(timepoint)
+            # average = []
+            # for x in profit:
+            #     average.append(x)
+            # average_profit.append(np.mean(average))
+
             for agent in modelA.sellers_list:
                 memory.append(j)
                 profit.append(agent.profit)
@@ -70,37 +75,73 @@ def experiment1(iterations):
                 timepoint += 1
                 time.append(timepoint)
 
-            for i in profit:
-                average_profit.append(i)
-
-
     #Make dataframe and show the results
     sns.set(style="darkgrid")
-    data = {'Agents': agents, 'Memory': memory, 'Profit': profit,
-            'Average_p': average_profit }
-    df = pd.DataFrame(data, columns=['Agents','Memory','Profit', 'Average_p'])
-    sns.lineplot(x="Time", y="Average_p",
-                 hue="Profit", style="Memory",
-                 data=data)
+    data = {'Agents': agents, 'Memory': memory, 'Profit': profit, 'Time': time}
+            #'Average_p': average_profit }
+    df = pd.DataFrame(data, columns=['Agents','Memory','Profit', 'Time']) #Average_p
+    sns.lineplot(x="Time", y="Profit", style="Memory", data=data)
+                 #hue="Profit", style="Memory",
+    plt.title('The profit of agents with different memory')
+    plt.xlabel('Time')
+    plt.ylabel('Profit')
+    plt.savefig('results/experiment1.png')
     plt.show()
-
-
-    #     plt.plot(range(len(profit_buyer)), profit_buyer, label='Buyer m =' + str(j))
-    #     plt.plot(range(len(profit_seller)), profit_seller, label='Seller m =' + str(j))
-    # plt.title('The profits of agents with different memory')
-    # plt.xlabel('Time')
-    # plt.ylabel('Profit')
-    # plt.legend(loc='best')
-    # plt.savefig('results/experiment1.png')
-    # plt.show()
 
 # def experimentx(iterations):
     #BEST STRATEGY
     #NEED memory and weight
 
 
-"""Experiment 2: Boxplot memory vs profit"""
+"""Experiment 2: Boxplot memory vs profit (agent level)"""
 def experiment2(iterations):
+    #Example: http://seaborn.pydata.org/examples/grouped_boxplot.html
+    memory, profit, agents = [], [], []
+    memories = [x for x in range(1,6)]
+    memories = [1,10,20,30]
+    random.seed(1)
+
+    for i in range(iterations):
+        print('start iteration', i+1)
+        time = datetime.now()
+        for j in memories:
+            modelA = Model(0.5)
+            modelA.make_buyers(3)
+            modelA.make_sellers(3)
+            for agent in modelA.buyers_list:
+                agent.strategies.memory = j
+            for agent in modelA.sellers_list:
+                agent.strategies.memory = j
+
+            modelA.run_simulation()
+
+            for agent in modelA.buyers_list:
+                if agent.random == False:
+                    profit.append(agent.profit)
+                    agents.append('Buyer')
+                    memory.append(i)
+            for agent in modelA.sellers_list:
+                if agent.random == False:
+                    profit.append(agent.profit)
+                    agents.append('Seller')
+                    memory.append(j)
+        past = datetime.now()-time
+        print(past.seconds, 'seconds needed')
+
+    #Make dataframe and boxplot the results
+    sns.set(style="ticks", palette="pastel")
+    data = {'Agents': agents, 'Memory': memory, 'Profit': profit}
+    df = pd.DataFrame(data, columns=['Agents','Memory','Profit'])
+    sns.boxplot(x="Memory", y="Profit",
+                hue="Agents", palette=["m", "g"], data=df)
+    sns.despine(offset=10, trim=True)
+    plt.show()
+    plt.tight_layout()
+    plt.savefig('results/experiment3.png')
+
+
+"""Experiment 3: Strategy evaluation memory vs Profit (agent level)"""
+def experiment3(iterations):
     #Example: http://seaborn.pydata.org/examples/grouped_boxplot.html
     memory, profit, agents = [], [], []
     memories = [x for x in range(1,6)]
@@ -144,11 +185,7 @@ def experiment2(iterations):
     plt.savefig('results/experiment3.png')
     plt.show()
 
-#def experimentx():
-    #Experiment 2 - Strategy evaluation memory vs Profit (agent level)
-    #experiment 1 with strategy_evaluation_memory
-
-"""Experiment 3: Artificial and real stock market"""
+"""Experiment 4: Artificial and real stock market"""
 def run_real_market():
     #Import the data csv file
     #Dataset obtained from: https://www.kaggle.com/borismarjanovic/price-volume-data-for-all-us-stocks-etfs/home
@@ -187,7 +224,7 @@ def run_real_market():
     prices = df['Price'].tolist()
     return dates, prices
 
-def experiment3():
+def experiment4():
     plt.figure()
 
     dates, prices = run_real_market()
@@ -211,8 +248,8 @@ def main():
 
 if __name__ == "__main__":
     # run experiments
-    experiment1(2)
-    # experiment2(5)
-    # experiment3()
+    # experiment1(2)
+    experiment2(5)
+    # experiment3(2)
     # experiment4()
     # experiment5()
