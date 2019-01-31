@@ -135,12 +135,12 @@ class Agent():
                 self.strategy_evaluation[j].append(abs(self.choose(history_mod, weights_mod) - stock_price_history[-i]))
         #print(self.strategy_evaluation)
 
-    def track_strategies(self, stock_price_history):
+    def track_strategies(self, stock_price_history, best_aim):
         #checks whether the max_lenght is already reached. If so, the first element is removed before a new last element is added
         for i in range(len(self.strategy_evaluation)):
             if self.strategies.strategy_evaluation_memory == len(self.strategy_evaluation[i]):
                 self.strategy_evaluation[i].pop(0)
             #print(stock_price_history[:-1])
-            self.strategy_evaluation[i].append(abs(self.choose(stock_price_history[:-1],self.strategies.strategies[i]) - stock_price_history[-1]))
+            self.strategy_evaluation[i].append(abs(self.choose(stock_price_history[:-1],self.strategies.strategies[i]) - best_aim))
         return self.strategy_evaluation
 

@@ -15,16 +15,20 @@ class Model():
     def __init__(self, random_agent):
 
         self.time = 0
-        self.end_time = 900
+        self.end_time = 1000
 
         self.buyers_list = []
         self.sellers_list = []
 
-        self.number_of_buyers = 80
-        self.number_of_sellers = 80
+        self.number_of_buyers = 20
+        self.number_of_sellers = 20
         self.ratio_of_random_agents = random_agent
 		
         self.stock_price_history = [10]
+		#To see what is the best price every turn
+        self.best_sell_price = [self.stock_price_history[0]]
+        self.best_buy_price = [self.stock_price_history[0]]
+
         self.temp_stock_price = 0
 
         # Warming-up parameters
@@ -90,11 +94,11 @@ class Model():
             self.time += 1
 
     def run_simulation(self):
-        self.warm_up()
-        #for i in range(90):
-        #    self.time += 1
-        #    #self.stock_price_history.append(self.stock_price_history[-1] + 0.05 )
-        #    self.stock_price_history.append(self.stock_price_history[-1] + 2 * math.sin(i * math.pi / 17))
+        #self.warm_up()
+        for i in range(90):
+            self.time += 1
+            #self.stock_price_history.append(self.stock_price_history[-1] + 0.05 )
+            self.stock_price_history.append(self.stock_price_history[-1] + 2 * math.sin(i * math.pi / 17))
         
 
         #Start the real simulation
@@ -106,15 +110,16 @@ class Model():
 
         while(self.time < self.end_time + self.warming_up_time):
             for buyer in self.buyers_list[int(round((self.ratio_of_random_agents*self.number_of_buyers))):]:
+                print(buyer.strategy_evaluation)
                 buyer.match_prices.append(0)
-                buyer.track_strategies(self.stock_price_history)
+                buyer.track_strategies(self.stock_price_history, self.best_buy_price[-1])
                 buyer.buy_prices.append(buyer.choose(self.stock_price_history, buyer.choose_strategy()))
             for buyer in self.buyers_list[:int(round((self.ratio_of_random_agents*self.number_of_buyers)))]:
                 buyer.random_choose(self.stock_price_history)
 
             for seller in self.sellers_list[int(round(self.ratio_of_random_agents*self.number_of_sellers)):]:
                 seller.match_prices.append(0)
-                seller.track_strategies(self.stock_price_history)
+                seller.track_strategies(self.stock_price_history, self.best_sell_price[-1])
                 seller.sell_prices.append(seller.choose(self.stock_price_history, seller.choose_strategy()))
             for seller in self.sellers_list[:int(round(self.ratio_of_random_agents*self.number_of_sellers))]:
                 seller.random_choose(self.stock_price_history)
@@ -163,10 +168,21 @@ class Model():
         winning_indices = []
         random.shuffle(temp_sellers)
         random.shuffle(temp_buyers)
+		
+        self.best_sell_price.append(temp_sellers[0].sell_prices[-1])
+        self.best_buy_price.append(temp_buyers[0].buy_prices[-1])
+
 
         for i in range(len(temp_sellers)):
             for j in range(len(temp_buyers)):
                 if temp_sellers[i].sell_prices[-1] <= temp_buyers[j].buy_prices[-1]:
+					
+                    #Find the best prices each turn
+                    if self.best_sell_price[-1] < temp_sellers[i].sell_prices[-1]:
+                        self.best_sell_price[-1] = temp_sellers[i].sell_prices[-1]
+                    if self.best_buy_price[-1] > temp_buyers[j].buy_prices[-1]:
+                        self.best_buy_price[-1] = temp_buyers[j].buy_prices[-1] 
+					
                     winning_indices.append(i)
 
                     average_price = (temp_sellers[i].sell_prices[-1] + temp_buyers[j].buy_prices[-1]) / 2

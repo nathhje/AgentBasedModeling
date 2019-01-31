@@ -19,6 +19,7 @@ def main():
     modelA.make_sellers(3)
     modelA.run_simulation()
 
+
     plt.figure()
 	##Plot normal stockflow
 
