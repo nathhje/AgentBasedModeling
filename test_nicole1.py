@@ -64,8 +64,9 @@ def experiment2(iterations):
     #Example: http://seaborn.pydata.org/examples/grouped_boxplot.html
     memory, profit, agents = [], [], []
     memories = [x for x in range(1,6)]
-    memories = [1,10,20,30]
+    memories = [1,5,10,15,20,25]
     random.seed(1)
+    plt.figure()
 
     for j in range(iterations):
         print('start iteration', j+1)
@@ -101,8 +102,9 @@ def experiment2(iterations):
     sns.boxplot(x="Memory", y="Profit",
                 hue="Agents", palette=["m", "g"], data=df)
     sns.despine(offset=10, trim=True)
-    plt.savefig('results/experiment2.png')
     plt.show()
+    plt.tight_layout()
+    plt.savefig('results/experiment2.png')
 
 def experiment3(iterations):
     #Example: http://seaborn.pydata.org/examples/grouped_boxplot.html
@@ -110,6 +112,7 @@ def experiment3(iterations):
     memories = [x for x in range(1,6)]
     memories = [1,5,10,15,20,25]
     random.seed(1)
+    plt.figure()
 
     for j in range(iterations):
         print('start iteration', j+1)
@@ -145,8 +148,9 @@ def experiment3(iterations):
     sns.boxplot(x="Memory", y="Matches",
                 hue="Agents", palette=["m", "g"], data=df)
     sns.despine(offset=10, trim=True)
-    plt.savefig('results/experiment3.png')
     plt.show()
+    plt.tight_layout()
+    plt.savefig('results/experiment3.png')
 
 """Experiment: Artificial and real stock market"""
 def run_real_market():
@@ -197,9 +201,10 @@ def main():
     return modelA
 
 if __name__ == "__main__":
+    iterations = 5
     # run experiments
     # experiment1()
-    # experiment2(5)
-    experiment3(5)
+    experiment2(iterations)
+    experiment3(iterations)
     # experiment4()
     # experiment5()
