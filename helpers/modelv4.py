@@ -15,7 +15,7 @@ class Model():
     def __init__(self, random_agent):
 
         self.time = 0
-        self.end_time = 400
+        self.end_time = 2000
 
         self.buyers_list = []
         self.sellers_list = []
@@ -127,11 +127,10 @@ class Model():
             for buyer in self.buyers_list:
                 if not buyer.random:
                     buyer.match_prices.append(0)
-                    if(int(self.time)%5 == 0):
-                        buyer.track_strategies(self.stock_price_history, self.best_buy_price[-1])
+                    buyer.track_strategies(self.stock_price_history, self.best_buy_price[-1])
                     buyer.buy_prices.append(buyer.choose(self.stock_price_history, buyer.choose_strategy()))
                 else:
-                    if random.random() > 0.5:
+                    if random.random() > 0.9:
                         buyer.fixed_choose(self.stock_price_history)
                     else:
                         buyer.random_choose(self.stock_price_history)
@@ -142,7 +141,7 @@ class Model():
                     seller.track_strategies(self.stock_price_history, self.best_sell_price[-1])
                     seller.sell_prices.append(seller.choose(self.stock_price_history, seller.choose_strategy()))
                 else:
-                    if random.random() > 0.5:
+                    if random.random() > 0.9:
                         seller.fixed_choose(self.stock_price_history)
                     else:
                         seller.random_choose(self.stock_price_history)
