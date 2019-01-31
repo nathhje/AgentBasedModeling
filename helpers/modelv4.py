@@ -127,7 +127,10 @@ class Model():
             winning_agents, temp_buyers, temp_sellers = self.match(winning_agents, temp_buyers, temp_sellers)
 
             #Update the stock price based on the match
-            self.temp_stock_price = self.temp_stock_price / (len(winning_agents) / 2)
+            if self.temp_stock_price == 0:
+                self.temp_stock_price = self.stock_price_history[-1]
+            else:
+                self.temp_stock_price = self.temp_stock_price / (len(winning_agents) / 2)
             self.stock_price_history.append(self.temp_stock_price)
 
             self.temp_stock_price = 0
