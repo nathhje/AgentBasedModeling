@@ -15,13 +15,13 @@ class Model():
     def __init__(self, random_agent):
 
         self.time = 0
-        self.end_time = 100
+        self.end_time = 900
 
         self.buyers_list = []
         self.sellers_list = []
 
-        self.number_of_buyers = 100
-        self.number_of_sellers = 100
+        self.number_of_buyers = 80
+        self.number_of_sellers = 80
         self.ratio_of_random_agents = random_agent
 		
         self.stock_price_history = [10]
@@ -30,7 +30,7 @@ class Model():
         # Warming-up parameters
         self.warm_up_type = [0,0]
         self.warming_up_time = 50
-        self.number_of_wu_agents = 10
+        self.number_of_wu_agents = 40
         self.warm_up_buyers_list = []
         self.warm_up_sellers_list = []
 
