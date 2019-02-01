@@ -55,6 +55,8 @@ var xValue = function(d) { return d.Time;}, // data -> value
 var yValue = function(d) { return d["Price"];}, // data -> value
     yScale = d3.scale.linear().range([height, 0]), // value -> display
     yMap = function(d) { return yScale(yValue(d));}, // data -> display
+	yValue2 = function(d) { return d["StockPrice"];}
+	yMap2 = function(d) { return yScale(yValue2(d));},
     yAxis = d3.svg.axis().scale(yScale).orient("left");
 
 // setup fill color
@@ -85,8 +87,8 @@ d3.csv("data1.csv", function(error, data) {
   });
 
   // don't want dots overlapping axis, so add in buffer to data domain
-  xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
-  yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
+  xScale = xScale.domain([d3.min(data, xValue), d3.max(data, xValue)]);
+  yScale = yScale.domain([d3.min(data, yValue), d3.max(data, yValue)]);
 
   // x-axis
   svg.append("g")
@@ -127,10 +129,12 @@ d3.csv("data1.csv", function(error, data) {
       .attr("cx", xMap)
       .attr("cy", yMap)
       .style("fill", function(d) {if(d.Type == "sell"){return "blue"}else{return "green"}}) 
+	  .style("opacity", function(d) { if(d.Random == "True"){return "0.1"}else{return "0.9"}})
       .on("mouseover", function(d) {
           tooltip.transition()
                .duration(200)
-               .style("opacity", .8);
+				.style("opacity", 1)
+               
           tooltip.html(d["Id"] + "<br/> (" + xValue(d) 
 	        + ", " + yValue(d) + ")")
                .style("left", (d3.event.pageX + 5) + "px")
@@ -145,16 +149,62 @@ d3.csv("data1.csv", function(error, data) {
           stringid = "." + d3.select(this)["0"]["0"].className.animVal
 		  console.log(d3.select(this))
 		  d3.selectAll(stringid).moveToFront()
-		  if(d3.select(stringid)["0"]["0"].style.fill == "blue"){
-			d3.selectAll(stringid).attr("r", 3).style("fill","red")}
+		  if(d3.select(stringid)["0"]["0"].r.animVal.value == 1){
+			d3.selectAll(stringid).attr("r", 3).style("fill",function(d) {if(d.Strategy == "0"){return "red"}else if(d.Strategy == "1"){return "orange"}else{return "yellow"}})}
 		  else{
-		  d3.selectAll(stringid).attr("r", 1).style("fill","blue")}
-			
+		  d3.selectAll(stringid).attr("r", 1).style("fill",function(d) {if(d.Type == "sell"){return "blue"}else{return "green"}})}
+	
+
 		
       });
 
+	svg.selectAll("sp")
+      .data(data)
+    .enter().append("circle")
+	.attr("class", "sp")
+      .attr("r", 1)
+      .attr("cx", xMap)
+      .attr("cy", yMap2)
+      .style("fill", "black")
+      .on("mouseover", function(d) {
+          tooltip.transition()
+               .duration(200)
+				.style("opacity", 1)
+               
+          tooltip.html("On time " + d["Time"] + " a stockprice of " + d["StockPrice"])
+               .style("left", 100 + "px")
+               .style("top", 100 + "px");
+      })
+      .on("mouseout", function(d) {
+          tooltip.transition()
+               .duration(500)
+               .style("opacity", 0);})
+//d3.csv("data2.csv", function(error, data) {
+//
+//  // change string (from CSV) into number format
+//  data.forEach(function(d) {
+//    d.Stockprice = +d.Stockprice;
+//	d.Time = +d.Time;
+//
+//	//console.log(d);
+//  });
+//	
+//var valueline = d3.svg.line()
+//    .x(function(d) { console.log(xScale(d.Time)); return xScale(d.Time); })
+//    .y(function(d) { return yScale(d.Stockprice); });
+//
+//console.log(svg.selectAll("path"))
+//svg.selectAll("path").data(data)
+//	.enter().append("path")
+//      .attr("class", "line")
+//      .attr("d", return valueline})
+//      .style("fill", "none")
+//      .style("stroke", "grey")
+//      .style("stroke-width", "1");
+//
+//})
+//
 });
-
 </script>
 </body>
 </html>

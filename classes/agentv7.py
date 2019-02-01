@@ -66,8 +66,6 @@ class Agent():
     """Warming up period, random choosing"""
     def fixed_choose(self, stock_price_history):
 
-        
-
         period = round(max(300,len(stock_price_history))/self.set_period)
         self.match_prices.append(0)
         self.strategy_index.append(0)

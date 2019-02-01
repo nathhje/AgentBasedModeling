@@ -1,17 +1,15 @@
 import csv
 
 def make_csv(modelA):	
-	print(len(modelA.sellers_list[0].strategy_index))
-	print(len(modelA.sellers_list[-1].strategy_index))
 	
-	dataset = [["Price", "Time", "Id", "Type"]]
+	dataset = [["Price", "Time", "Id", "Type", "Random", "Strategy", "StockPrice"]]
 	for agent in modelA.sellers_list:
 		for i in range(len(agent.sell_prices)):
-			temp_list = [agent.sell_prices[i], i, agent.id, "sell"]
+			temp_list = [agent.sell_prices[i], i, agent.id, "sell", agent.random, agent.strategy_index[i]]
 			dataset.append(temp_list)
 	for agent in modelA.buyers_list:
 		for i in range(len(agent.buy_prices)):
-			temp_list = [agent.buy_prices[i], i, agent.id, "buy"]
+			temp_list = [agent.buy_prices[i], i, agent.id, "buy", agent.random, agent.strategy_index[i], modelA.stock_price_history[i + modelA.warming_up_time]]
 			dataset.append(temp_list)
 	
 	with open('data1.csv', 'w', newline='') as f:
