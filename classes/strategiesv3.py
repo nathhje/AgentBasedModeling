@@ -16,6 +16,8 @@ class Strategies():
 
     """create 5 stategies for each agent. Each strategy has a different memory and a weight to each element in the memory"""
     def create_strategies(self, memory):
+        self.strategies = []
+        self.memory = memory
         for i in range(self.number_of_strategies):
             self.strategies.append(self.setWeights(memory))
 
