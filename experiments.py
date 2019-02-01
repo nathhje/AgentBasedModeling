@@ -88,6 +88,7 @@ def experiment1(iterations):
 
 """Experiment 2: Boxplot memory vs profit (agent level)"""
 def experiment2(iterations):
+    print('start experiment 2')
     #Example: http://seaborn.pydata.org/examples/grouped_boxplot.html
     memory, profit, agents = [], [], []
     memories = [x for x in range(1,6)]
@@ -96,7 +97,7 @@ def experiment2(iterations):
     plt.figure()
 
     for i in range(iterations):
-        print('start iteration', i+1)
+        print('-- start iteration', i+1,)
         time = datetime.now()
         for j in memories:
             modelA = Model(0.5)
@@ -111,24 +112,25 @@ def experiment2(iterations):
 
             for agent in modelA.buyers_list:
                 if agent.random == False:
-                    profit.append(agent.profit)
+                    profit.append(float(agent.profit)/float(modelA.end_time))
                     agents.append('Buyer')
                     memory.append(j)
             for agent in modelA.sellers_list:
                 if agent.random == False:
-                    profit.append(agent.profit)
+                    profit.append(float(agent.profit)/float(modelA.end_time))
                     agents.append('Seller')
                     memory.append(j)
-        past = datetime.now()-time
-        print(past.seconds, 'seconds needed')
+        done = datetime.now()
+        print((done-time).seconds, 'seconds needed - ', (done-start_time).seconds, 'seconds simulating')
 
     #Make dataframe and boxplot the results
     sns.set(style="ticks", palette="pastel")
-    data = {'Agents': agents, 'Memory': memory, 'Profit': profit}
-    df = pd.DataFrame(data, columns=['Agents','Memory','Profit'])
-    sns.boxplot(x="Memory", y="Profit",
+    data = {'Agents': agents, 'Memory': memory, 'Average profit per round': profit}
+    df = pd.DataFrame(data, columns=['Agents','Memory','Average profit per round'])
+    sns.boxplot(x="Memory", y="Average profit per round",
                 hue="Agents", palette=["m", "g"], data=df)
     sns.despine(offset=10, trim=True)
+    plt.title('Memory vs Profit (Agent)')
     plt.show()
     plt.tight_layout()
     plt.savefig('results/experiment2.png')
@@ -136,6 +138,8 @@ def experiment2(iterations):
 
 """Experiment 3: Boxplot strategy evaluation memory vs Profit (agent level)"""
 def experiment3(iterations):
+    print('start experiment 3')
+    #Example: http://seaborn.pydata.org/examples/grouped_boxplot.html
     #Example: http://seaborn.pydata.org/examples/grouped_boxplot.html
     eval_memory, profit, agents = [], [], []
     memories = [x for x in range(1,6)]
@@ -144,7 +148,8 @@ def experiment3(iterations):
     plt.figure()
 
     for i in range(iterations):
-        print('start iteration', i+1)
+        print('-- start iteration', i+1,)
+        time = datetime.now()
         time = datetime.now()
         for j in memories:
             modelA = Model(0.5)
@@ -159,31 +164,33 @@ def experiment3(iterations):
 
             for agent in modelA.buyers_list:
                 if agent.random == False:
-                    profit.append(agent.profit)
+                    profit.append(float(agent.profit)/float(modelA.end_time))
                     agents.append('Buyer')
                     eval_memory.append(j)
             for agent in modelA.sellers_list:
                 if agent.random == False:
-                    profit.append(agent.profit)
+                    profit.append(float(agent.profit)/float(modelA.end_time))
                     agents.append('Seller')
                     eval_memory.append(j)
-        past = datetime.now()-time
-        print(past.seconds, 'seconds needed')
+        done = datetime.now()
+        print((done-time).seconds, 'seconds needed - ', (done-start_time).seconds, 'seconds simulating')
 
     #Make dataframe and boxplot the results
     sns.set(style="ticks", palette="pastel")
-    data = {'Agents': agents, 'Evaluation memory': eval_memory, 'Profit': profit}
-    df = pd.DataFrame(data, columns=['Agents','Evaluation memory','Profit'])
-    sns.boxplot(x="Evaluation memory", y="Profit",
+    data = {'Agents': agents, 'Evaluation memory': eval_memory, 'Average profit per round': profit}
+    df = pd.DataFrame(data, columns=['Agents','Evaluation memory','Average profit per round'])
+    sns.boxplot(x="Evaluation memory", y="Average profit per round",
                 hue="Agents", palette=["m", "g"], data=df)
     sns.despine(offset=10, trim=True)
+    plt.title('Evaluation Memory vs Profit (Agent)')
     plt.show()
     plt.tight_layout()
     plt.savefig('results/experiment3.png')
 
 
-"""Experiment 4: Memory vs Match number (agent level) """
+"""Experiment 4: Boxplot memory vs matches (agent level) """
 def experiment4(iterations):
+    print('start experiment 4')
     #Example: http://seaborn.pydata.org/examples/grouped_boxplot.html
     memory, matches, agents = [], [], []
     memories = [x for x in range(1,6)]
@@ -192,7 +199,7 @@ def experiment4(iterations):
     plt.figure()
 
     for i in range(iterations):
-        print('start iteration', i+1)
+        print('-- start iteration', i+1,)
         time = datetime.now()
         for j in memories:
             modelA = Model(0.5)
@@ -207,27 +214,78 @@ def experiment4(iterations):
 
             for agent in modelA.buyers_list:
                 if agent.random == False:
-                    matches.append(agent.match_count)
+                    matches.append(float(agent.match_count)/float(modelA.end_time))
                     agents.append('Buyer')
                     memory.append(j)
             for agent in modelA.sellers_list:
                 if agent.random == False:
-                    matches.append(agent.match_count)
+                    matches.append(float(agent.match_count)/float(modelA.end_time))
                     agents.append('Seller')
                     memory.append(j)
-        past = datetime.now()-time
-        print(past.seconds, 'seconds needed')
+        done = datetime.now()
+        print((done-time).seconds, 'seconds needed - ', (done-start_time).seconds, 'seconds simulating')
 
     #Make dataframe and boxplot the results
     sns.set(style="ticks", palette="pastel")
-    data = {'Agents': agents, 'Memory': memory, 'Matches': matches}
-    df = pd.DataFrame(data, columns=['Agents','Memory','Matches'])
-    sns.boxplot(x="Memory", y="Matches",
+    data = {'Agents': agents, 'Memory': memory, 'Fraction found matches': matches}
+    df = pd.DataFrame(data, columns=['Agents','Memory','Fraction found matches'])
+    sns.boxplot(x="Memory", y="Fraction found matches",
                 hue="Agents", palette=["m", "g"], data=df)
     sns.despine(offset=10, trim=True)
+    plt.title('Memory vs Matches (Agent)')
     plt.show()
     plt.tight_layout()
     plt.savefig('results/experiment4.png')
+
+"""Experiment 5: Boxplot strategy evaluation memory vs Matches (agent level)"""
+def experiment5(iterations):
+    print('start experiment 5')
+    #Example: http://seaborn.pydata.org/examples/grouped_boxplot.html
+    #Example: http://seaborn.pydata.org/examples/grouped_boxplot.html
+    eval_memory, matches, agents = [], [], []
+    memories = [x for x in range(1,6)]
+    memories = [1,5,10,15,20,25]
+    random.seed(1)
+    plt.figure()
+
+    for i in range(iterations):
+        print('-- start iteration', i+1,)
+        time = datetime.now()
+        for j in memories:
+            modelA = Model(0.5)
+            modelA.make_buyers(3)
+            modelA.make_sellers(3)
+            for agent in modelA.buyers_list:
+                agent.strategies.strategy_evaluation = j
+            for agent in modelA.sellers_list:
+                agent.strategies.strategy_evaluation = j
+
+            modelA.run_simulation()
+
+            for agent in modelA.buyers_list:
+                if agent.random == False:
+                    matches.append(float(agent.match_count)/float(modelA.end_time))
+                    agents.append('Buyer')
+                    eval_memory.append(j)
+            for agent in modelA.sellers_list:
+                if agent.random == False:
+                    matches.append(float(agent.match_count)/float(modelA.end_time))
+                    agents.append('Seller')
+                    eval_memory.append(j)
+        done = datetime.now()
+        print((done-time).seconds, 'seconds needed - ', (done-start_time).seconds, 'seconds simulating')
+
+    #Make dataframe and boxplot the results
+    sns.set(style="ticks", palette="pastel")
+    data = {'Agents': agents, 'Evaluation memory': eval_memory, 'Fraction found matches': matches}
+    df = pd.DataFrame(data, columns=['Agents','Evaluation memory','Fraction found matches'])
+    sns.boxplot(x="Evaluation memory", y="Fraction found matches",
+                hue="Agents", palette=["m", "g"], data=df)
+    sns.despine(offset=10, trim=True)
+    plt.title('Evaluation Memory vs Matches (Agent)')
+    plt.show()
+    plt.tight_layout()
+    plt.savefig('results/experiment5.png')
 
 """Experiment: Artificial and real stock market"""
 def run_real_market():
@@ -279,9 +337,10 @@ def main():
 
 if __name__ == "__main__":
     iterations = 5
+    start_time = datetime.now()
     # run experiments
     # experiment1(iterations)
-    # experiment2(iterations)
-    # experiment3(iterations)
+    experiment2(iterations)
+    experiment3(iterations)
     experiment4(iterations)
-    # experiment5(iterations)
+    experiment5(iterations)
