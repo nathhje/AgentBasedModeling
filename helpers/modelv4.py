@@ -15,13 +15,13 @@ class Model():
     def __init__(self, random_agent):
 
         self.time = 0
-        self.end_time = 2000
+        self.end_time = 1000
 
         self.buyers_list = []
         self.sellers_list = []
 
-        self.number_of_buyers = 20
-        self.number_of_sellers = 20
+        self.number_of_buyers = 50
+        self.number_of_sellers = 50
         self.ratio_of_random_agents = random_agent
 		
         self.stock_price_history = [10]
