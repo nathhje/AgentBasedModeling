@@ -91,3 +91,8 @@ Research questions:
 - Do traders with certain strategies prefer traders with certain other strategies?
 - What is the best strategy for a trader?
 - Which strategies will lead to a stable market?
+
+instruction for sensitivity analysis:
+so here is the instruction for running sa after pulling the most recent version:
+in the file sensitivityanalysis.py, on line 29 it says 'sadata/samples_nathalie.csv', and on line 44 it says 'sadata/outcomes_nathalie.csv', in both lines replace my name with your own name and run the file sensitivity analysis. wait for it to finish and push your results. Easy peasy.
+the only requirement is that i need to have created a samples_yourname.csv file with your input variables.
