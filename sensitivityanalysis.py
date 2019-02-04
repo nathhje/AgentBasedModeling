@@ -121,8 +121,9 @@ def evaluate_model(inputs):
             matches += agent.match_count
             smarts += 1
         
-    profit = profit / smarts
-    matches = matches / smarts
+    if smarts > 0:
+        profit = profit / smarts
+        matches = matches / smarts
     
     stock = 0
     
