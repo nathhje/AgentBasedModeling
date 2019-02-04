@@ -18,8 +18,7 @@ import numpy as np
 
 def main():
     '''
-    problem, params = createProblem()
-    print(params)
+    
     
     #Y = np.zeros([params.shape[0]])
     #print(Y)
@@ -46,8 +45,9 @@ def main():
         
         with open(filename, 'a', newline = '') as csvfile:
             writer = csv.writer(csvfile, delimiter=',', quotechar='"')
-            
-            writer.writerow(X+Y)
+            row = X+Y
+            writer.writerow(row)
+            print(X+Y)
                 
         
     #si = sobol.analyze(problem,Y,print_to_console=True)
@@ -55,11 +55,26 @@ def main():
     #print(si['S1'])
     #print(si['S2'])
     
+def createSamples():
+    problem, params = createProblem()
+    print(params)
+    
+    filename = 'sadata/samples.csv'
+    with open(filename, 'a', newline = '') as csvfile:
+    
+        writer = csv.writer(csvfile, delimiter=',', quotechar='"')
+        
+        for row in params:
+            
+            writer.writerow(row)
+    for i, X in enumerate(params):
+        print(i,X)
+    
 
 def createProblem():
     problem = {
             'num_vars': 5,
-            'names': ['ratio_of_smart_agents', 'number_of_strategies', 'memory','evaluation', 'agent_number'],
+            'names': ['ratio_of_random_agents', 'number_of_strategies', 'memory','evaluation', 'agent_number'],
             'bounds': [[0., 1.],
                        [2., 10.],
                        [2., 50.],
@@ -67,7 +82,7 @@ def createProblem():
                        [20.,80.]]
             }
     
-    param_values = saltelli.sample(problem, 400)
+    param_values = saltelli.sample(problem, 1000)
     
     return problem, param_values
 
@@ -85,30 +100,29 @@ def evaluate_model(inputs):
     for buyer in model.buyers_list:
         buyer.strategies.create_strategies(int(round(inputs[2])))
         buyer.strategy_evaluation_memory = int(round(inputs[3]))
-        buyer.positivity = inputs[4]
     for seller in model.sellers_list:
         seller.strategies.create_strategies(int(round(inputs[2])))
         seller.strategy_evaluation_memory = int(round(inputs[3]))
-        seller.positivity = inputs[4]
     model.run_simulation()
     
     profit = 0
     matches = 0
+    smarts = 0
     
     for agent in model.buyers_list:
         if not agent.random:
             profit += agent.profit
             matches += agent.match_count
-        
+            smarts += 1
+    
     for agent in model.sellers_list:
         if not agent.random:
             profit += agent.profit
             matches += agent.match_count
+            smarts += 1
         
-    agent_number = (len(model.buyers_list) + len(model.sellers_list))
-        
-    profit = profit / agent_number
-    matches = matches / agent_number
+    profit = profit / smarts
+    matches = matches / smarts
     
     stock = 0
     
@@ -126,7 +140,8 @@ def evaluate_model(inputs):
         variance += (model.stock_price_history[i] - stock) ** 2
     
     variance = variance / price_number
-    
+    print(profit)
+    print(matches)
     return [profit, matches, variance]
     
 
