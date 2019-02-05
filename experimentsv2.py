@@ -309,23 +309,45 @@ def run_real_market():
     df['Date'] = pd.to_datetime(df['Date'])
     data.append(df)
 
-    # #Plot with pandas - fast
-    # print(data)
-    # df = df.sort_values('Date') #Just to be sure
-    #
-    # plt.figure()
-    # plt.plot(df['Date'], df['Price'], color='blue', label='Real stock market')
-    # plt.title('Stock market')
-    # plt.xlabel('Date')
-    # plt.ylabel('Price')
-    # plt.legend(loc='best')
-    # plt.show()
-    # plt.savefig('results/real_stockmarket.png')
+    #Plot with pandas - fast
+    df = df.sort_values('Date') #Just to be sure
+    print(df['Date'][2541]) # First date of 2010
+    WarmUp2010_1 = [[i] for i in range(2541, 2651)]
+    WarmUp2010_2 = [df['Price'][i] for i in range(2541, 2651)]
+    WarmUp2010 = [WarmUp2010_1, WarmUp2010_2]
+    print(WarmUp2010)
+    print(df['Date'][2793]) # First date of 2011
+    #WarmUp2011 = [[i],[df['Price'][i]] for i in range(2793, 2893)]
+    print(df['Date'][3045]) # First date of 2012
+    #WarmUp2012 = [[i], [df['Price'][i]] for i in range(3045, 3145)]
+    print(df['Date'][3295]) # First date of 2013
+    #WarmUp2013 = [[i], [df['Price'][i]] for i in range(3295, 3395)]
+    print(df['Date'][3547]) # First date of 2014
+    #WarmUp2014 = [[i], [df['Price'][i]] for i in range(3547, 3647)]
+    plt.figure()
+    plt.plot(df['Date'], df['Price'], color='blue', label='Real stock market')
+    plt.title('Stock market')
+    plt.xlabel('Date')
+    plt.ylabel('Price')
+    plt.legend(loc='best')
+    #plt.show()
+    plt.savefig('results/real_stockmarket.png')
 
     #Plot with lists - long runtime
     dates = df['Date'].tolist()
     prices = df['Price'].tolist()
-    return dates, prices
+    #return dates, prices
+
+    for i, X in enumerate(params):
+    #print(i,X)
+        Y = evaluate_model(X)
+        filename = 'outcomes_real_market.csv'
+        
+        with open(filename, 'a', newline = '') as csvfile:
+            writer = csv.writer(csvfile, delimiter=',', quotechar='"')
+            row = X+Y
+            writer.writerow(row)
+            print(X+Y)
 
 """START PROGRAM"""
 def main():
@@ -343,5 +365,6 @@ if __name__ == "__main__":
     # experiment1(iterations)
     # experiment2(iterations)
     # experiment3(iterations)
-    experiment4(iterations)
+    # experiment4(iterations)
     # experiment5(iterations)
+    run_real_market()

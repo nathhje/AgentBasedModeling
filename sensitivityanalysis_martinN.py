@@ -26,7 +26,7 @@ def main():
     
     params = []
     
-    fileread = 'sadata/samples_nathalie.csv'
+    fileread = 'sadata/samples_martin4.csv'
     with open(fileread, 'r') as csvfile:
     
         reader = csv.reader(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
@@ -41,7 +41,7 @@ def main():
     for i, X in enumerate(params):
         #print(i,X)
         Y = evaluate_model(X)
-        filename = 'sadata/outcomes_nathalie.csv'
+        filename = 'sadata/outcomes_martin4.csv'
         
         with open(filename, 'a', newline = '') as csvfile:
             writer = csv.writer(csvfile, delimiter=',', quotechar='"')
