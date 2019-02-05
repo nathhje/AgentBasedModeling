@@ -161,19 +161,20 @@ def run_real_market(iterations):
     #Plot with pandas - fast
     df = df.sort_values('Date') #Just to be sure
     #makes a list with the original indices and the market data for the first 100 entries of 2010
+    Warm_up_length = 100
     WarmUps = []
-    WarmUps.append([df['Price'][i] for i in range(2541, 2651)])
-    WarmUps.append([df['Price'][i] for i in range(2793, 2893)])
-    WarmUps.append([df['Price'][i] for i in range(3045, 3145)])
-    WarmUps.append([df['Price'][i] for i in range(3295, 3395)])
-    WarmUps.append([df['Price'][i] for i in range(3547, 3647)])
-    run_length = 200
+    WarmUps.append([df['Price'][i] for i in range(2541, 2541 + Warm_up_length)])
+    WarmUps.append([df['Price'][i] for i in range(2793, 2793 + Warm_up_length)])
+    WarmUps.append([df['Price'][i] for i in range(3045, 3045 + Warm_up_length)])
+    WarmUps.append([df['Price'][i] for i in range(3295, 3295 + Warm_up_length)])
+    WarmUps.append([df['Price'][i] for i in range(3547, 3547 + Warm_up_length)])
+    run_length = 100 #also needs to be changed in modelv5_feedData.py at self.end_time
     Compare_data = []
-    Compare_data.append([df['Price'][i] for i in range(2651, 2651 + run_length)])
-    Compare_data.append([df['Price'][i] for i in range(2893, 2893 + run_length)])
-    Compare_data.append([df['Price'][i] for i in range(3145, 3145 + run_length)])
-    Compare_data.append([df['Price'][i] for i in range(3395, 3395 + run_length)])
-    Compare_data.append([df['Price'][i] for i in range(3647, 3647 + run_length)])
+    Compare_data.append([df['Price'][i] for i in range(2541 + Warm_up_length, 2541 + Warm_up_length + run_length)])
+    Compare_data.append([df['Price'][i] for i in range(2793 + Warm_up_length, 2793 + Warm_up_length + run_length)])
+    Compare_data.append([df['Price'][i] for i in range(3045 + Warm_up_length, 3045 + Warm_up_length + run_length)])
+    Compare_data.append([df['Price'][i] for i in range(3295 + Warm_up_length, 3295 + Warm_up_length + run_length)])
+    Compare_data.append([df['Price'][i] for i in range(3547 + Warm_up_length, 3547 + Warm_up_length + run_length)])
     #print(WarmUps)
     #print(df['Date'][2541]) # First date of 2010
     #print(df['Date'][2793]) # First date of 2011
@@ -181,32 +182,39 @@ def run_real_market(iterations):
     #print(df['Date'][3295]) # First date of 2013
     #print(df['Date'][3547]) # First date of 2014
 
+    variance_list = []
 
     for i in range(iterations):
-        for j in len(range(WarmUps)):
+        print('-- start iteration', i+1,)
+        variance_list.append([])
+        for j in range(len(WarmUps)):
             modelA = Model(0.5)
             modelA.make_buyers(3)
             modelA.make_sellers(3)
 
-            print(WarmUps[j])
+            #print(WarmUps[j])
             modelA.run_simulation(WarmUps[j])
-            print(modelA.stock_price_history[100:])
-            print(modelA.Compare_data[j])
-
-    plt.figure()
-    plt.plot(df['Date'], df['Price'], color='blue', label='Real stock market')
-    plt.title('Stock market')
-    plt.xlabel('Date')
-    plt.ylabel('Price')
-    plt.legend(loc='best')
+            #print(modelA.stock_price_history[Warm_up_length:])
+            #print(Compare_data[j])
+            normalized_variance = (sum([(real_datum - simulated_datum)**2 for real_datum, simulated_datum in zip(modelA.stock_price_history[Warm_up_length:], Compare_data)][0])**0.5)/run_length
+            #print(normalized_variance)
+            variance_list[i].append(normalized_variance)
+    print(variance_list)
+    #plt.figure()
+    #plt.plot(df['Date'], df['Price'], color='blue', label='Real stock market')
+    #plt.title('Stock market')
+    #plt.xlabel('Date')
+    #plt.ylabel('Price')
+    #plt.legend(loc='best')
     #plt.show()
-    plt.savefig('results/real_stockmarket.png')
+    #plt.savefig('results/real_stockmarket.png')
 
     #Plot with lists - long runtime
-    dates = df['Date'].tolist()
-    prices = df['Price'].tolist()
+    #dates = df['Date'].tolist()
+    #prices = df['Price'].tolist()
     #return dates, prices
-
+"""
+#no clue how the csv part is supposed to work :D
     for i, X in enumerate(params):
     #print(i,X)
         Y = evaluate_model(X)
@@ -217,7 +225,7 @@ def run_real_market(iterations):
             row = X+Y
             writer.writerow(row)
             print(X+Y)
-
+"""
 """START PROGRAM"""
 def main():
     random.seed(1)

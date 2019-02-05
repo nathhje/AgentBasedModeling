@@ -15,7 +15,7 @@ class Model():
     def __init__(self, random_agent):
 
         self.time = 0
-        self.end_time = 200
+        self.end_time = 100
 
         self.buyers_list = []
         self.sellers_list = []
@@ -33,7 +33,7 @@ class Model():
 
         # Warming-up parameters
         self.warm_up_type = [0,0]
-        self.warming_up_time = 100
+        self.warming_up_time = 0
         self.number_of_wu_agents = 40
         self.warm_up_buyers_list = []
         self.warm_up_sellers_list = []
@@ -124,7 +124,7 @@ class Model():
         for seller in self.sellers_list:
             seller.initial_track_strategies(self.stock_price_history)
 
-        while(self.time < self.end_time + self.warming_up_time):
+        while(self.time < self.end_time):
             for buyer in self.buyers_list:
                 if not buyer.random:
                     buyer.match_prices.append(0)
