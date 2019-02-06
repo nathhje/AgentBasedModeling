@@ -110,13 +110,6 @@ class Model():
 
     def run_simulation(self):
         self.warm_up()
-        #for i in range(90):
-        #    self.time += 1
-        #    #self.stock_price_history.append(self.stock_price_history[-1] + 0.05 )
-        #    self.stock_price_history.append(self.stock_price_history[-1] + 2 * math.sin(i * math.pi / 17))
-        
-
-        #Start the real simulation
         
         for buyer in self.buyers_list:
             buyer.initial_track_strategies(self.stock_price_history)
