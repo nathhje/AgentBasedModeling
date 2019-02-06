@@ -6,5 +6,6 @@ data5.csv
 data[0-9].csv
 data*.csv
 
+__pycache__/
 *.pyc
 *.pyc
