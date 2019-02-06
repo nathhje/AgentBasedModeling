@@ -8,4 +8,4 @@ data*.csv
 
 __pycache__/
 *.pyc
-*.pyc
+*.pyo
