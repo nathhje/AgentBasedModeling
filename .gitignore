@@ -9,3 +9,5 @@ data*.csv
 __pycache__/
 *.pyc
 *.pyo
+
+.idea
