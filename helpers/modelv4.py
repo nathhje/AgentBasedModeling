@@ -65,7 +65,6 @@ class Model():
         for i in range(randoms):
             self.buyers_list.append(Agent(False, self.id_counter, strategy_number,True))
             self.id_counter += 1
-            
         
         for i in range(self.number_of_sellers-randoms):
             self.buyers_list.append(Agent(False, self.id_counter, strategy_number,False))
@@ -78,7 +77,6 @@ class Model():
         for i in range(randoms):
             self.sellers_list.append(Agent(True, self.id_counter, strategy_number,True))
             self.id_counter += 1
-            
         
         for i in range(self.number_of_sellers-randoms):
             self.sellers_list.append(Agent(True, self.id_counter, strategy_number,False))
@@ -179,6 +177,7 @@ class Model():
 
             self.update_market(self.warm_up_buyers_list, self.warm_up_sellers_list)
 
+    """run the stock market"""
     def run_simulation(self):
         
         for buyer in self.buyers_list:
@@ -186,6 +185,7 @@ class Model():
         for seller in self.sellers_list:
             seller.initial_track_strategies(self.stock_price_history)
 
+        """agents determine new sell/buy price and are matched up accordingly"""
         while(self.time < self.end_time + self.warming_up_time):
             for buyer in self.buyers_list:
                 if not buyer.random:
@@ -208,4 +208,5 @@ class Model():
                         seller.fixed_choose(self.stock_price_history)
                     else:
                         seller.random_choose(self.stock_price_history)
+
             self.update_market(self.buyers_list, self.sellers_list)

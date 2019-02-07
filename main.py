@@ -10,14 +10,14 @@ from helpers.make_csv import make_csv
 import matplotlib.pyplot as plt
 import numpy as np
 import random
-
+import classes.properties as properties
 
 def main():
 
     random.seed(4)
-    modelA = Model(0.5)
-    modelA.make_buyers(3)
-    modelA.make_sellers(3)
+    modelA = Model(properties.ratio_of_random_agents)
+    modelA.make_buyers(properties.agent_memory)
+    modelA.make_sellers(properties.agent_memory)
     modelA.warm_up()
     modelA.run_simulation()
 
@@ -48,10 +48,9 @@ def main():
     #plt.show()
     #plt.savefig('results/crossreverence.png')
 
-	#Plot matches
-	
-   
-	
+	#Plot matches 
+
+    """create plots"""
     plt.scatter(modelA.plots_prices_time_sellers, modelA.plots_prices_sell, s=3, c="blue")
     plt.scatter(modelA.plots_prices_time_buyers, modelA.plots_prices_buy, s=3, c="green")
     plt.scatter(modelA.plots_prices_time_match, modelA.plots_prices_match, s=3, c="orange")
