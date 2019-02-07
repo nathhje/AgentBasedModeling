@@ -95,11 +95,7 @@ class Model():
         if len(winning_agents) == 0:
             self.stock_price_history.append(self.stock_price_history[-1]
         else:
-            if self.time <= self.warming_up_time / 2.0:
-                self.temp_stock_price = (self.temp_stock_price / (len(winning_agents) / 2))
-         else:
-                self.temp_stock_price = (self.temp_stock_price / (len(winning_agents) / 2))
-
+            self.temp_stock_price = (self.temp_stock_price / (len(winning_agents) / 2))
             self.stock_price_history.append(self.temp_stock_price)
 
         self.temp_stock_price = 0
