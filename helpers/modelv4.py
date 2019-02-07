@@ -179,26 +179,7 @@ class Model():
 
             self.update_market(self.warm_up_buyers_list, self.warm_up_sellers_list)
 
-#            winning_agents = []
-#            temp_buyers =  self.warm_up_buyers_list.copy()
-#            temp_sellers = self.warm_up_sellers_list.copy()
-#
-#            """match the buyers and sellers"""
-#            winning_agents, temp_buyers, temp_sellers = self.match(winning_agents, temp_buyers, temp_sellers)
-#
-#            """update the stock price based on the match"""
-#            if self.time <= self.warming_up_time / 2.0:
-#                self.temp_stock_price = (self.temp_stock_price / (len(winning_agents) / 2)) + random.random()/10*self.warm_up_type[0]
-#            else:
-#                self.temp_stock_price = (self.temp_stock_price / (len(winning_agents) / 2)) + random.random()/10*self.warm_up_type[1]
-#            
-#            self.stock_price_history.append(self.temp_stock_price)
-#
-#            self.temp_stock_price = 0
-#            self.time += 1
-#
     def run_simulation(self):
-        self.warm_up()
         
         for buyer in self.buyers_list:
             buyer.initial_track_strategies(self.stock_price_history)

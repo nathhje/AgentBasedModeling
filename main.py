@@ -18,6 +18,7 @@ def main():
     modelA = Model(0.5)
     modelA.make_buyers(3)
     modelA.make_sellers(3)
+    modelA.warm_up()
     modelA.run_simulation()
 
     print(modelA.buyers_list[-1].strategy_index)
