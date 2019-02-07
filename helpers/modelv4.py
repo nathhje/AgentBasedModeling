@@ -40,7 +40,6 @@ class Model():
         self.temp_stock_price = 0
 
         """Warming-up parameters"""
-        self.warm_up_type = [0,0]
         self.warming_up_time = properties.warming_up_time
         self.number_of_wu_agents = properties.number_of_wu_agents
         self.warm_up_buyers_list = []
@@ -94,9 +93,9 @@ class Model():
 
         """update the stock price based on the match"""
         if self.time <= self.warming_up_time / 2.0:
-            self.temp_stock_price = (self.temp_stock_price / (len(winning_agents) / 2)) + random.random()/10*self.warm_up_type[0]
+            self.temp_stock_price = (self.temp_stock_price / (len(winning_agents) / 2))
         else:
-            self.temp_stock_price = (self.temp_stock_price / (len(winning_agents) / 2)) + random.random()/10*self.warm_up_type[1]
+            self.temp_stock_price = (self.temp_stock_price / (len(winning_agents) / 2))
 
         self.stock_price_history.append(self.temp_stock_price)
 
