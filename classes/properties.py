@@ -13,3 +13,4 @@ number_of_wu_agents = 40
 initial_stockprice = 10
 ratio_of_random_agents = 0.5
 agent_memory = 3
+strategy_evaluation_memory = 5

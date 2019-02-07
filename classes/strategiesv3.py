@@ -1,5 +1,6 @@
 import random
 import math
+import classes.properties as properties
 
 class Strategies():
 
@@ -14,7 +15,7 @@ class Strategies():
         """create different strategies depending on the memory of the agent"""
         self.create_strategies(self.memory)
 
-        self.strategy_evaluation_memory = 5
+        self.strategy_evaluation_memory = properties.strategy_evaluation_memory
 
     """create stategies for each agent. Each strategy has a different memory and a weight to each element in the memory"""
     def create_strategies(self, memory):
@@ -39,7 +40,6 @@ class Strategies():
             weight_list.append(random.random())
         self.normalize_weights(weight_list)
         return weight_list
-
 
     """With the current strategy and weight of each element in the strategy, estimate a new market value"""
     def next_point(self, weight_list, set_points):
