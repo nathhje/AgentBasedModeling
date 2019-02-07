@@ -13,6 +13,7 @@ import random
 import pandas as pd
 import seaborn as sns
 from datetime import datetime
+import csv
 
 #CHECK EXPERIMENTS ON GITHUB:
 # Memory vs Profit (agent level)
@@ -139,6 +140,17 @@ def experiment2(iterations):
 
 """Experiment: Artificial and real stock market"""
 def run_real_market(iterations):
+    for X in range(iterations):
+        Y = real_market(X)
+        filename = 'results/real_market.csv'
+
+        with open(filename, 'a', newline = '') as csvfile:
+            writer = csv.writer(csvfile, delimiter=',', quotechar='"')
+            row = Y
+            writer.writerow(row)
+            print(row)
+
+def real_market(iterations):
     #Import the data csv file
     #Dataset obtained from: https://www.kaggle.com/borismarjanovic/price-volume-data-for-all-us-stocks-etfs/home
     data = []
@@ -213,19 +225,11 @@ def run_real_market(iterations):
     #dates = df['Date'].tolist()
     #prices = df['Price'].tolist()
     #return dates, prices
-"""
-#no clue how the csv part is supposed to work :D
-    for i, X in enumerate(params):
-    #print(i,X)
-        Y = evaluate_model(X)
-        filename = 'outcomes_real_market.csv'
-        
-        with open(filename, 'a', newline = '') as csvfile:
-            writer = csv.writer(csvfile, delimiter=',', quotechar='"')
-            row = X+Y
-            writer.writerow(row)
-            print(X+Y)
-"""
+
+    """ What do you want to return?"""
+    return [variance_list]
+
+
 """START PROGRAM"""
 def main():
     random.seed(1)
@@ -237,7 +241,6 @@ def main():
 
 if __name__ == "__main__":
     iterations = 1
-    start_time = datetime.now()
     # run experiments
     # experiment1(iterations)
     # experiment2(iterations)
