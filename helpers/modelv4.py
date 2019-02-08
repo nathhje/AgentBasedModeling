@@ -93,7 +93,7 @@ class Model():
 
         """update the stock price based on the match"""
         if len(winning_agents) == 0:
-            self.stock_price_history.append(self.stock_price_history[-1]
+            self.stock_price_history.append(self.stock_price_history[-1])
         else:
             self.temp_stock_price = (self.temp_stock_price / (len(winning_agents) / 2))
             self.stock_price_history.append(self.temp_stock_price)
