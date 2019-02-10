@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Jan 12 09:44:23 2019
-
-@author: Gebruiker
+The main body of the stock market model.
 """
 
 # agent - old agent file -- smartagent - new agent file

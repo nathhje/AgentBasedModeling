@@ -1,54 +1,26 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Jan 12 09:42:36 2019
-
-@author: Gebruiker
+The main file of the stock market ABM model. By running this file the model will
+be run once with standard input and a plot will be made that shows the offers at
+each time step. Blue is sellers that were unable to sell, green is buyers that
+were unable to buy, orange are agents that managed to make a match and red is
+the stock price.
 """
 
 from helpers.modelv4 import Model
-from helpers.make_csv import make_csv
 import matplotlib.pyplot as plt
-import numpy as np
-import random
 import classes.properties as properties
 
 def main():
 
-    random.seed(4)
+    """initialise and run model"""
     modelA = Model(properties.ratio_of_random_agents)
     modelA.make_buyers(properties.agent_memory)
     modelA.make_sellers(properties.agent_memory)
     modelA.warm_up()
     modelA.run_simulation()
 
-    print(modelA.buyers_list[-1].strategy_index)
     plt.figure()
-	##Plot normal stockflow
-
-    #plt.plot(modelA.stock_price_history)
-    #plt.show()
-    #plt.savefig('results/stock_prices.png')
-
-	##Plot correlation
-    #list1, list2 = [], []
-    #for agent in modelA.buyers_list:
-    #    list1.append(agent.profit)
-    #    list2.append(agent.memory)
-    #list3, list4 = [], []
-    #for agent in modelA.sellers_list:
-    #    list3.append(agent.profit)
-    #    list4.append(agent.memory)
-    #print(modelA.time)
-	#
-	#
-    #plt.scatter(list2, list1, c="blue")
-    #plt.scatter(list4, list3, c="green")
-    #plt.ylabel("Profit")
-    #plt.xlabel("Memory")
-    #plt.show()
-    #plt.savefig('results/crossreverence.png')
-
-	#Plot matches 
 
     """create plots"""
     plt.scatter(modelA.plots_prices_time_sellers, modelA.plots_prices_sell, s=3, c="blue")
@@ -57,11 +29,6 @@ def main():
     plt.plot(range(len(modelA.stock_price_history)), modelA.stock_price_history, c="red")
     plt.axis(ymin = 0)
     plt.show()
-    plt.savefig('results/stock_prices.png')
-	
-    make_csv(modelA)
-	
-
-	
+    
 if __name__ == "__main__":
     main()

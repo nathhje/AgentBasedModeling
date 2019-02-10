@@ -1,3 +1,7 @@
+""" 
+A file to export data into a csv.
+"""
+
 import csv
 
 def make_csv(modelA):	

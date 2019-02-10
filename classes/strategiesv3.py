@@ -1,3 +1,7 @@
+"""
+The file that deal with creating and handling the strategies of an agent.
+"""
+
 import random
 import math
 import classes.properties as properties

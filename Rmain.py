@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Jan 12 09:42:36 2019
-
-@author: Gebruiker
-"""
-
 from helpers.modelv4 import Model
 from helpers.make_csv import make_csv
 import matplotlib.pyplot as plt

@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Jan 12 09:45:28 2019
-
-@author: my favorite team
+The file that contains all the code for the agents, which can be either a
+buyer or a seller.
 """
 import random
-import math
 import numpy as np
 from classes.strategiesv3 import Strategies
 

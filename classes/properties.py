@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Jan 12 09:50:10 2019
-
-@author: Nicole 
+A list of properties used in the stock market model.
 """
 
 max_runtime = 1000
