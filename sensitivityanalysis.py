@@ -17,16 +17,10 @@ import numpy as np
 
 
 def main():
-    '''
-    
-    
-    #Y = np.zeros([params.shape[0]])
-    #print(Y)
-    '''
     
     params = []
     
-    fileread = 'sadata/samples_nathalie.csv'
+    fileread = 'sadata/samples_nathalie6.csv'
     with open(fileread, 'r') as csvfile:
     
         reader = csv.reader(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
@@ -41,7 +35,7 @@ def main():
     for i, X in enumerate(params):
         #print(i,X)
         Y = evaluate_model(X)
-        filename = 'sadata/outcomes_nathalie.csv'
+        filename = 'sadata/outcomes_nathalie6.csv'
         
         with open(filename, 'a', newline = '') as csvfile:
             writer = csv.writer(csvfile, delimiter=',', quotechar='"')
@@ -49,11 +43,6 @@ def main():
             writer.writerow(row)
             print(X+Y)
                 
-        
-    #si = sobol.analyze(problem,Y,print_to_console=True)
-    
-    #print(si['S1'])
-    #print(si['S2'])
     
 def createSamples():
     problem, params = createProblem()
@@ -69,7 +58,52 @@ def createSamples():
             writer.writerow(row)
     for i, X in enumerate(params):
         print(i,X)
+        
+def analysis():
     
+    problem, params = createProblem()
+    Y = np.zeros([params.shape[0]])
+    i = 0
+    
+    fileread = 'sadata/outcomes.csv'
+    with open(fileread, 'r') as csvfile:
+    
+        reader = csv.reader(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
+        
+        for row in reader:
+            
+            Y[i] = row[7]
+            i += 1
+            
+        print(Y)
+    
+    si = sobol.analyze(problem,Y,print_to_console=True)
+    
+    print(si['S1'])
+    print(si['S2'])
+    
+    plots(si)
+    
+def plots(data):
+    
+    x = ['random','strategies','memory','evaluation','agents','random total','strategies total','memory total','evaluation total','agents total','random and strategies', 'random and memory', 'random and evaluation', 'random and agents', 'strategies and memory', 'strategies and evaluation', 'strategies and agents', 'memory and evaluation', 'memory and agents','evaluation and agents']
+    y = list(data['S1']) + list(data['ST'])
+    error = list(data['S1_conf']) + list(data['ST_conf'])
+    for i in range(4):
+        y += list(data['S2'][i][i+1:])
+        error += list(data['S2_conf'][i][i+1:])
+    
+    fig = plt.figure()
+    
+    ax = fig.add_subplot(111)
+    plt.bar(x,y, yerr=error, color = 'g')
+    plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
+             rotation_mode="anchor")
+    
+    plt.xlabel('factor(s)')
+    plt.ylabel('influence')
+    plt.title('The influence of the input factors \n on the stability of the market')
+    plt.show()
 
 def createProblem():
     problem = {
@@ -147,4 +181,4 @@ def evaluate_model(inputs):
     
 
 if __name__ == "__main__":
-    main()
+    analysis()
